@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="BGLike - Comparte tu colección de juegos de mesa y descubre qué jugar con tu grupo.">
+
+    <title>BGLike</title>
+
+    <link rel="stylesheet"
+          href="./css/global.css">
+
+    <link rel="stylesheet"
+          href="./css/home.css">
+</head>
+
+<body>
+
+    <main class="home-page">
+
+        <section class="home-card">
+
+            <header class="home-header">
+
+                <div class="brand-icon">
+                    🎲
+                </div>
+
+                <h1 class="brand-title">
+                    BGLike
+                </h1>
+
+                <p class="brand-subtitle">
+                    Board Game Like
+                </p>
+
+            </header>
+
+
+            <div class="home-content">
+
+                <p class="home-description">
+                    Comparte tu colección de juegos de mesa,
+                    registra las preferencias de tu grupo
+                    y encuentren qué jugar.
+                </p>
+
+
+                <div class="form-group">
+
+                    <label for="collectionCode">
+                        Código de colección
+                    </label>
+
+                    <input
+                        type="text"
+                        id="collectionCode"
+                        name="collectionCode"
+                        maxlength="50"
+                        autocomplete="off"
+                        placeholder="Ej. VIERNESBG">
+
+                    <span
+                        id="collectionCodeError"
+                        class="form-error"
+                        aria-live="polite">
+                    </span>
+
+                </div>
+
+
+                <div class="home-actions">
+
+                    <button
+                        type="button"
+                        id="btnImportCollection"
+                        class="home-action home-action-primary">
+
+                        <span class="action-icon">
+                            📁
+                        </span>
+
+                        <span class="action-content">
+
+                            <strong>
+                                Cargar colección
+                            </strong>
+
+                            <small>
+                                Importa o actualiza un CSV de BGG
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="btnJoinCollection"
+                        class="home-action home-action-secondary">
+
+                        <span class="action-icon">
+                            🎲
+                        </span>
+
+                        <span class="action-content">
+
+                            <strong>
+                                Unirse a colección
+                            </strong>
+
+                            <small>
+                                Entra con el código de tu grupo
+                            </small>
+
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <footer class="home-footer">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    Powered by BoardGameGeek + Supabase
+                </span>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+
+    <script
+        type="module"
+        src="./js/pages/home.js">
+    </script>
+
+</body>
+
+</html>

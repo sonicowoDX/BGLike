@@ -1,0 +1,738 @@
+.game-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #27272a,
+            #18181b
+        );
+
+    border:
+        1px solid
+        #3f3f46;
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 15px 35px
+        rgba(0, 0, 0, 0.32);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.game-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    border-color:
+        #52525b;
+
+    box-shadow:
+        0 22px 45px
+        rgba(0, 0, 0, 0.45);
+
+}
+
+
+.game-card-header {
+
+    min-height: 84px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding:
+        17px 18px;
+
+}
+
+
+.game-title {
+
+    margin: 0;
+
+    font-size: 18px;
+
+    line-height: 1.25;
+
+}
+
+
+.game-original-name {
+
+    min-height: 17px;
+
+    margin:
+        5px 0 0;
+
+    overflow: hidden;
+
+    color:
+        var(--text-muted);
+
+    font-size: 12px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+.game-image-container {
+
+    position: relative;
+
+    height: 285px;
+
+    margin:
+        0 12px;
+
+    overflow: hidden;
+
+    background:
+        #101012;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius:
+        14px;
+
+}
+
+
+.game-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+
+}
+
+
+.game-image-placeholder {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    color:
+        var(--text-muted);
+
+    background:
+
+        radial-gradient(
+            circle,
+            #27272a,
+            #111114
+        );
+
+}
+
+
+.game-image-placeholder span {
+
+    font-size: 48px;
+
+}
+
+
+.game-image-placeholder small {
+
+    font-size: 12px;
+
+}
+
+
+.game-rating {
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 10px;
+
+    min-width: 48px;
+
+    padding:
+        8px 10px;
+
+    text-align: center;
+
+    border:
+        2px solid
+        rgba(255, 255, 255, 0.8);
+
+    border-radius:
+        10px;
+
+    box-shadow:
+        0 4px 14px
+        rgba(0, 0, 0, 0.35);
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    z-index: 2;
+
+}
+
+
+.rating-low {
+
+    color: #ffffff;
+
+    background:
+        #dc2626;
+
+}
+
+
+.rating-medium {
+
+    color: #ffffff;
+
+    background:
+        #09090b;
+
+}
+
+
+.rating-high {
+
+    color: #052e16;
+
+    background:
+        #86efac;
+
+}
+
+
+.rating-none {
+
+    color:
+        var(--text-secondary);
+
+    background:
+        #27272a;
+
+}
+
+
+.game-reaction-counts {
+
+    position: absolute;
+
+    left: 8px;
+
+    right: 8px;
+
+    bottom: 8px;
+
+    min-height: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 11px;
+
+    padding:
+        6px 9px;
+
+    color: #18181b;
+
+    background:
+        rgba(255, 255, 255, 0.93);
+
+    border-radius:
+        9px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+.game-actions {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 7px;
+
+    padding:
+        15px 14px;
+
+}
+
+
+.reaction-button {
+
+    min-width: 0;
+
+    min-height: 43px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    background:
+        #27272a;
+
+    border:
+        1px solid
+        #3f3f46;
+
+    border-radius:
+        10px;
+
+    font-size: 19px;
+
+    filter:
+        grayscale(0.8);
+
+    opacity: 0.62;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        filter 0.15s ease,
+        opacity 0.15s ease;
+
+}
+
+
+.reaction-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    filter:
+        grayscale(0);
+
+    opacity: 1;
+
+}
+
+
+/*
+ * En el punto 8 utilizaremos
+ * esta clase para la reacción
+ * seleccionada.
+ */
+
+.reaction-button.active {
+
+    filter:
+        grayscale(0);
+
+    opacity: 1;
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* ODIAR */
+
+.reaction-button[
+    data-reaction="ODIAR"
+].active {
+
+    background:
+        rgba(220, 38, 38, 0.18);
+
+    border-color:
+        #dc2626;
+
+    box-shadow:
+        0 0 16px
+        rgba(220, 38, 38, 0.30);
+
+}
+
+
+/* DISLIKE */
+
+.reaction-button[
+    data-reaction="DISLIKE"
+].active {
+
+    background:
+        rgba(249, 115, 22, 0.18);
+
+    border-color:
+        #f97316;
+
+    box-shadow:
+        0 0 16px
+        rgba(249, 115, 22, 0.25);
+
+}
+
+
+/* NO JUGADO */
+
+.reaction-button[
+    data-reaction="NO_JUGADO"
+].active {
+
+    background:
+        rgba(161, 161, 170, 0.16);
+
+    border-color:
+        #a1a1aa;
+
+    box-shadow:
+        0 0 16px
+        rgba(161, 161, 170, 0.22);
+
+}
+
+
+/* LIKE */
+
+.reaction-button[
+    data-reaction="LIKE"
+].active {
+
+    background:
+        rgba(34, 197, 94, 0.18);
+
+    border-color:
+        #22c55e;
+
+    box-shadow:
+        0 0 16px
+        rgba(34, 197, 94, 0.28);
+
+}
+
+
+/* FAVORITO */
+
+.reaction-button[
+    data-reaction="FAVORITO"
+].active {
+
+    background:
+        rgba(234, 179, 8, 0.20);
+
+    border-color:
+        #eab308;
+
+    box-shadow:
+        0 0 18px
+        rgba(234, 179, 8, 0.30);
+
+}
+
+
+.game-card-footer {
+
+    min-height: 53px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        10px 15px;
+
+    color:
+        var(--text-secondary);
+
+    background:
+        rgba(0, 0, 0, 0.18);
+
+    border-top:
+        1px solid
+        var(--border-color);
+
+    font-size: 12px;
+
+}
+
+
+.game-type {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+.game-weight {
+
+    color:
+        var(--text-primary);
+
+    font-weight: 600;
+
+}
+
+
+.game-players {
+
+    justify-self: end;
+
+    color:
+        var(--text-primary);
+
+    font-weight: 600;
+
+}
+
+.reaction-button:disabled {
+
+    cursor:
+        wait;
+
+}
+
+
+.game-actions:has(
+    .reaction-button:disabled
+) .reaction-button {
+
+    pointer-events:
+        none;
+
+}
+
+.game-score {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin:
+        12px
+        14px
+        0;
+
+    padding:
+        10px
+        13px;
+
+    background:
+        rgba(0, 0, 0, 0.20);
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius:
+        10px;
+
+}
+
+
+.game-score span {
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.8px;
+
+}
+
+
+.game-score strong {
+
+    font-size:
+        18px;
+
+}
+
+
+.game-score strong.score-positive {
+
+    color:
+        #4ade80;
+
+}
+
+
+.game-score strong.score-negative {
+
+    color:
+        #f87171;
+
+}
+
+
+.game-score strong.score-neutral {
+
+    color:
+        var(--text-secondary);
+
+}
+
+.game-title-link {
+
+    color:
+        var(--text-primary);
+
+    text-decoration:
+        none;
+
+    transition:
+        color 0.15s ease;
+
+}
+
+
+.game-title-link:hover {
+
+    color:
+        var(--accent);
+
+}
+
+
+.external-link-icon {
+
+    margin-left:
+        4px;
+
+    color:
+        var(--text-muted);
+
+    font-size:
+        12px;
+
+    font-weight:
+        400;
+
+}
+
+
+.game-title-link:hover
+.external-link-icon {
+
+    color:
+        var(--accent);
+
+}
+
+.add-image-button {
+
+    margin-top:
+        7px;
+
+    padding:
+        8px 12px;
+
+    cursor: pointer;
+
+    color:
+        #ffffff;
+
+    background:
+        rgba(139, 92, 246, 0.18);
+
+    border:
+        1px solid
+        rgba(139, 92, 246, 0.45);
+
+    border-radius:
+        8px;
+
+    font-size:
+        11px;
+
+    font-weight:
+        600;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+
+}
+
+
+.add-image-button:hover {
+
+    transform:
+        translateY(-1px);
+
+    background:
+        rgba(139, 92, 246, 0.30);
+
+    border-color:
+        var(--accent);
+
+}

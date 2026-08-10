@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Colección | BGLike</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/global.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/collection.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/cards.css">
+
+</head>
+
+<body>
+
+    <div class="collection-page">
+
+        <header class="collection-topbar">
+
+            <div class="collection-brand">
+
+                <span class="collection-brand-icon">
+                    🎲
+                </span>
+
+                <div>
+
+                    <strong>
+                        BGLike
+                    </strong>
+
+                    <small id="collectionCode">
+                        -
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="current-user">
+
+                <span>
+                    Jugando como
+                </span>
+
+                <strong id="currentNickname">
+                    -
+                </strong>
+
+                <button
+                    type="button"
+                    id="btnChangeUser"
+                    class="change-user-button">
+
+                    Cambiar
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main class="collection-content">
+
+            <section class="collection-intro">
+
+                <div>
+
+                    <p class="section-kicker">
+                        Colección
+                    </p>
+
+                    <h1>
+                        ¿Qué jugamos hoy?
+                    </h1>
+
+                    <p>
+                        Revisa los juegos de tu grupo
+                        y registra tus preferencias.
+                    </p>
+
+                </div>
+
+
+                <div class="collection-intro-actions">
+
+                <div class="collection-summary">
+
+                    <span>
+                        Juegos
+                    </span>
+
+                    <strong id="gameCount">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnFeelingLucky"
+                    class="feeling-lucky-button">
+
+                    <span>
+                        🎲
+                    </span>
+
+                    Feeling Lucky
+
+                </button>
+
+            </div>
+
+            </section>
+
+
+            <section class="collection-toolbar">
+
+                <div class="search-box">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="search"
+                        id="gameSearch"
+                        placeholder="Buscar juego..."
+                        autocomplete="off">
+
+                </div>
+
+
+                <select
+                    id="gameSort"
+                    class="game-sort"
+                    title="Ordenar juegos">
+
+                    <option value="name">
+                        Nombre
+                    </option>
+
+                    <option value="rating-desc">
+                        Mi rating: mayor primero
+                    </option>
+
+                    <option value="rating-asc">
+                        Mi rating: menor primero
+                    </option>
+
+                    <option value="weight-desc">
+                        Mayor peso
+                    </option>
+
+                    <option value="weight-asc">
+                        Menor peso
+                    </option>
+
+                </select>
+
+            </section>
+
+            <section class="collection-filters">
+
+                <div class="filter-group">
+
+                    <div class="filter-heading">
+
+                        <div>
+                            <span class="filter-label">
+                                Jugadores presentes
+                            </span>
+
+                            <small>
+                                El score se calculará solamente con los seleccionados.
+                            </small>
+                        </div>
+
+                        <div class="filter-actions">
+
+                            <button
+                                type="button"
+                                id="btnSelectAllPlayers"
+                                class="filter-small-button">
+
+                                Todos
+
+                            </button>
+
+                            <button
+                                type="button"
+                                id="btnClearPlayers"
+                                class="filter-small-button">
+
+                                Ninguno
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="playerFilters"
+                        class="player-filters">
+                    </div>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <div class="filter-heading">
+
+                        <div>
+                            <span class="filter-label">
+                                Tipo de juego
+                            </span>
+
+                            <small>
+                                Elige qué elementos mostrar.
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="type-filters">
+
+                        <button
+                            type="button"
+                            class="type-filter-button active"
+                            data-game-type="standalone"
+                            aria-pressed="true">
+
+                            🎲 Standalone
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="type-filter-button active"
+                            data-game-type="expansion"
+                            aria-pressed="true">
+
+                            🧩 Expansiones
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div
+                id="collectionMessage"
+                class="collection-message"
+                hidden>
+            </div>
+
+
+            <section
+                id="loadingCollection"
+                class="collection-loading">
+
+                <div class="loading-spinner">
+                </div>
+
+                <p>
+                    Cargando colección...
+                </p>
+
+            </section>
+
+
+            <section
+                id="gamesGrid"
+                class="games-grid"
+                hidden>
+            </section>
+
+
+            <section
+                id="emptyCollection"
+                class="empty-collection"
+                hidden>
+
+                <span>
+                    🎲
+                </span>
+
+                <h2 id="emptyCollectionTitle">
+                    No encontramos juegos
+                </h2>
+
+                <p id="emptyCollectionText">
+                    Prueba modificando los filtros.
+                </p>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <div
+        id="imageLinkModal"
+        class="image-link-modal"
+        hidden>
+
+        <div
+            id="imageLinkBackdrop"
+            class="image-link-backdrop">
+        </div>
+
+
+        <section
+            class="image-link-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="imageLinkTitle">
+
+            <button
+                type="button"
+                id="btnCloseImageLink"
+                class="image-link-close"
+                aria-label="Cerrar">
+
+                ✕
+
+            </button>
+
+
+            <div class="image-link-header">
+
+                <span>
+                    🖼️
+                </span>
+
+                <h2 id="imageLinkTitle">
+                    Añadir portada
+                </h2>
+
+                <p id="imageLinkGameName">
+                </p>
+
+            </div>
+
+
+            <div class="image-link-help">
+
+                <p>
+                    Pega el enlace directo a la imagen
+                    de BoardGameGeek.
+                </p>
+
+                <a
+                    id="imageLinkBGG"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    Abrir juego en BoardGameGeek ↗
+
+                </a>
+
+            </div>
+
+
+            <form id="imageLinkForm">
+
+                <label for="imageLinkInput">
+                    Link de imagen
+                </label>
+
+
+                <input
+                    type="url"
+                    id="imageLinkInput"
+                    autocomplete="off"
+                    placeholder="https://cf.geekdo-images.com/...">
+
+
+                <span
+                    id="imageLinkError"
+                    class="form-error">
+                </span>
+
+
+                <button
+                    type="submit"
+                    id="btnSaveImageLink"
+                    class="save-image-link-button">
+
+                    Guardar imagen
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+    <div
+    id="luckyModal"
+    class="lucky-modal"
+    hidden>
+
+    <div
+        id="luckyBackdrop"
+        class="lucky-backdrop">
+    </div>
+
+
+        <section
+            class="lucky-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="luckyTitle">
+
+
+            <button
+                type="button"
+                id="btnCloseLucky"
+                class="lucky-close-button"
+                aria-label="Cerrar">
+
+                ✕
+
+            </button>
+
+
+            <div class="lucky-header">
+
+                <span class="lucky-dice">
+                    🎲
+                </span>
+
+                <p>
+                    Feeling Lucky
+                </p>
+
+                <h2 id="luckyTitle">
+                    ¿Qué jugamos?
+                </h2>
+
+            </div>
+
+
+            <div
+                id="luckySelection"
+                class="lucky-selection">
+
+                <div
+                    id="luckyImageContainer"
+                    class="lucky-image-container">
+
+                    <div class="lucky-placeholder">
+                        🎲
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="luckyGameName"
+                    class="lucky-game-name">
+
+                    Preparando selección...
+
+                </div>
+
+
+                <div
+                    id="luckyGameScore"
+                    class="lucky-game-score">
+
+                    Score 0
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="luckyResultInfo"
+                class="lucky-result-info">
+
+                <span>
+                    Candidatos:
+                    <strong id="luckyCandidateCount">
+                        0
+                    </strong>
+                </span>
+
+                <span>
+                    Jugadores:
+                    <strong id="luckyPlayerCount">
+                        0
+                    </strong>
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="btnSpinAgain"
+                class="spin-again-button"
+                hidden>
+
+                🎲 Elegir otra vez
+
+            </button>
+
+        </section>
+
+    </div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js">
+</script>
+
+    <script
+        type="module"
+        src="../js/pages/collection.js">
+    </script>
+
+</body>
+
+</html>

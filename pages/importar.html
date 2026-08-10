@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Importar colección | BGLike</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/global.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/home.css">
+
+</head>
+
+<body>
+
+    <main class="import-page">
+
+        <section class="import-container">
+
+            <header class="import-header">
+
+                <a
+                    href="../index.html"
+                    class="back-link">
+                    ← Volver
+                </a>
+
+                <div class="brand-icon">
+                    📁
+                </div>
+
+                <h1>
+                    Cargar colección
+                </h1>
+
+                <p>
+                    Importa tu colección exportada
+                    desde BoardGameGeek.
+                </p>
+
+            </header>
+
+
+            <div class="collection-code-box">
+
+                <span>
+                    Código de colección
+                </span>
+
+                <strong id="collectionCode">
+                    -
+                </strong>
+
+            </div>
+
+
+            <section class="upload-section">
+
+                <label
+                    for="csvFile"
+                    id="uploadArea"
+                    class="upload-area">
+
+                    <span class="upload-icon">
+                        📄
+                    </span>
+
+                    <strong>
+                        Selecciona tu archivo CSV
+                    </strong>
+
+                    <span>
+                        o arrástralo hasta aquí
+                    </span>
+
+                    <small>
+                        Archivo exportado desde BoardGameGeek
+                    </small>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="csvFile"
+                    accept=".csv,text/csv"
+                    hidden>
+
+            </section>
+
+
+            <div
+                id="fileInfo"
+                class="file-info"
+                hidden>
+
+                <div>
+
+                    <span class="file-icon">
+                        📄
+                    </span>
+
+                    <div>
+
+                        <strong id="fileName">
+                        </strong>
+
+                        <small id="fileSize">
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="btnRemoveFile"
+                    class="remove-file-button">
+                    ✕
+                </button>
+
+            </div>
+
+
+            <div
+                id="importMessage"
+                class="import-message"
+                hidden>
+            </div>
+
+
+            <section
+                id="previewSection"
+                class="preview-section"
+                hidden>
+
+                <div class="preview-header">
+
+                    <div>
+
+                        <h2>
+                            Vista previa
+                        </h2>
+
+                        <p id="previewSummary">
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="preview-stats">
+
+                    <div class="preview-stat">
+
+                        <span>
+                            Juegos encontrados
+                        </span>
+
+                        <strong id="totalGames">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="preview-stat">
+
+                        <span>
+                            Filas omitidas
+                        </span>
+
+                        <strong id="invalidGames">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="preview-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Object ID
+                                </th>
+
+                                <th>
+                                    Juego
+                                </th>
+
+                                <th>
+                                    Rating
+                                </th>
+
+                                <th>
+                                    Peso
+                                </th>
+
+                                <th>
+                                    Jugadores
+                                </th>
+
+                                <th>
+                                    Tipo
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="previewTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <p class="preview-note">
+
+                    Se muestran únicamente los primeros
+                    15 juegos del archivo.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    id="btnContinueImport"
+                    class="continue-button">
+
+                    Continuar con la importación
+
+                </button>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <!-- Parser CSV -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js">
+    </script>
+
+
+    <script
+        type="module"
+        src="../js/pages/import.js">
+    </script>
+
+</body>
+
+</html>
