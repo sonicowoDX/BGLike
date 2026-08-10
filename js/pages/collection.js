@@ -807,8 +807,8 @@ function ordenarJuegos(
 
 
                     /*
-                     * Mayor score primero.
-                     */
+                    * Mayor score primero.
+                    */
 
                     if (
                         scoreA !== scoreB
@@ -820,37 +820,9 @@ function ordenarJuegos(
 
 
                     /*
-                     * Desempate por
-                     * my_rating.
-                     */
-
-                    const ratingA =
-                        numeroSeguro(
-                            a.my_rating,
-                            0
-                        );
-
-
-                    const ratingB =
-                        numeroSeguro(
-                            b.my_rating,
-                            0
-                        );
-
-
-                    if (
-                        ratingA !== ratingB
-                    ) {
-
-                        return ratingB - ratingA;
-
-                    }
-
-
-                    /*
-                     * Último desempate:
-                     * nombre.
-                     */
+                    * Si tienen el mismo score,
+                    * ordenar alfabéticamente.
+                    */
 
                     return String(
                         a.objectname ?? ""
