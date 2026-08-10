@@ -784,8 +784,9 @@ function ordenarJuegos(
             break;
 
         case "score":
+        default:
 
-            return games.sort(
+            result.sort(
                 (
                     a,
                     b
@@ -889,7 +890,6 @@ function ordenarJuegos(
 
 
         case "name":
-        default:
 
             result.sort(
                 (
