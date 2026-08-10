@@ -783,6 +783,90 @@ function ordenarJuegos(
 
             break;
 
+        case "score":
+
+            return games.sort(
+                (
+                    a,
+                    b
+                ) => {
+
+                    const scoreA =
+                        numeroSeguro(
+                            a.score,
+                            0
+                        );
+
+
+                    const scoreB =
+                        numeroSeguro(
+                            b.score,
+                            0
+                        );
+
+
+                    /*
+                    * Mayor score primero.
+                    */
+
+                    if (
+                        scoreA !== scoreB
+                    ) {
+
+                        return scoreB - scoreA;
+
+                    }
+
+
+                    /*
+                    * Si tienen el mismo score,
+                    * usamos my_rating.
+                    */
+
+                    const ratingA =
+                        numeroSeguro(
+                            a.my_rating,
+                            0
+                        );
+
+
+                    const ratingB =
+                        numeroSeguro(
+                            b.my_rating,
+                            0
+                        );
+
+
+                    if (
+                        ratingA !== ratingB
+                    ) {
+
+                        return ratingB - ratingA;
+
+                    }
+
+
+                    /*
+                    * Último desempate:
+                    * nombre alfabético.
+                    */
+
+                    return String(
+                        a.objectname ?? ""
+                    ).localeCompare(
+                        String(
+                            b.objectname ?? ""
+                        ),
+                        "es",
+                        {
+                            sensitivity:
+                                "base"
+                        }
+                    );
+
+                }
+            );
+
 
         case "weight-asc":
 
