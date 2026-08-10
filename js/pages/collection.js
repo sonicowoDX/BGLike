@@ -783,8 +783,8 @@ function ordenarJuegos(
 
             break;
 
+
         case "score":
-        default:
 
             result.sort(
                 (
@@ -807,8 +807,8 @@ function ordenarJuegos(
 
 
                     /*
-                    * Mayor score primero.
-                    */
+                     * Mayor score primero.
+                     */
 
                     if (
                         scoreA !== scoreB
@@ -820,9 +820,9 @@ function ordenarJuegos(
 
 
                     /*
-                    * Si tienen el mismo score,
-                    * usamos my_rating.
-                    */
+                     * Desempate por
+                     * my_rating.
+                     */
 
                     const ratingA =
                         numeroSeguro(
@@ -848,9 +848,9 @@ function ordenarJuegos(
 
 
                     /*
-                    * Último desempate:
-                    * nombre alfabético.
-                    */
+                     * Último desempate:
+                     * nombre.
+                     */
 
                     return String(
                         a.objectname ?? ""
@@ -867,7 +867,7 @@ function ordenarJuegos(
 
                 }
             );
-            
+
             break;
 
 
@@ -892,6 +892,7 @@ function ordenarJuegos(
 
 
         case "name":
+        default:
 
             result.sort(
                 (
@@ -921,7 +922,6 @@ function ordenarJuegos(
     return result;
 
 }
-
 
 function renderJuegos(
     games
