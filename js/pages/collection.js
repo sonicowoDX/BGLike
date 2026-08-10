@@ -166,6 +166,23 @@ function cargarEncabezado(
 function inicializarEventos(
     session
 ) {
+    const shareCollection =
+        document.getElementById(
+            "btnShareCollection"
+        );
+
+
+    shareCollection.addEventListener(
+        "click",
+        function () {
+
+            compartirColeccion(
+                session
+            );
+
+        }
+    );
+
     const gamesGrid =
         document.getElementById(
             "gamesGrid"
@@ -2519,5 +2536,156 @@ function actualizarMensajeColeccionVacia() {
 
     text.textContent =
         "Prueba modificando los filtros.";
+
+}
+
+async function compartirColeccion(
+    session
+) {
+
+    const button =
+        document.getElementById(
+            "btnShareCollection"
+        );
+
+
+    const shareUrl =
+        `https://sonicowodx.github.io/BGLike/pages/unirse.html?codigo=${
+            encodeURIComponent(
+                session.collectionCode
+            )
+        }`;
+
+
+    const shareData = {
+
+        title:
+            "BGLike",
+
+        text:
+            `Únete a mi colección de juegos "${session.collectionCode}" en BGLike.`,
+
+        url:
+            shareUrl
+
+    };
+
+
+    /*
+     * En celulares y navegadores
+     * compatibles abre el menú
+     * nativo de compartir.
+     */
+
+    if (
+        navigator.share
+    ) {
+
+        try {
+
+            await navigator.share(
+                shareData
+            );
+
+            return;
+
+        }
+        catch (
+            error
+        ) {
+
+            /*
+             * Si el usuario simplemente
+             * cerró el menú de compartir,
+             * no mostramos error.
+             */
+
+            if (
+                error.name ===
+                "AbortError"
+            ) {
+
+                return;
+
+            }
+
+
+            console.warn(
+                "No fue posible compartir:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Fallback:
+     * copiar al portapapeles.
+     */
+
+    try {
+
+        await navigator.clipboard.writeText(
+            shareUrl
+        );
+
+
+        mostrarCompartirCopiado(
+            button
+        );
+
+    }
+    catch (
+        error
+    ) {
+
+        console.error(
+            "No fue posible copiar el enlace:",
+            error
+        );
+
+
+        window.prompt(
+            "Copia este enlace:",
+            shareUrl
+        );
+
+    }
+
+}
+
+function mostrarCompartirCopiado(
+    button
+) {
+
+    const originalText =
+        button.innerHTML;
+
+
+    button.innerHTML =
+        "✓ Link copiado";
+
+
+    button.classList.add(
+        "copied"
+    );
+
+
+    setTimeout(
+        function () {
+
+            button.innerHTML =
+                originalText;
+
+
+            button.classList.remove(
+                "copied"
+            );
+
+        },
+        1800
+    );
 
 }
