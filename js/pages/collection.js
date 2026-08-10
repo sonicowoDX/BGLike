@@ -719,6 +719,8 @@ function ordenarJuegos(
     const result =
         [...games];
 
+    
+
 
     switch (
         sort
@@ -786,6 +788,10 @@ function ordenarJuegos(
 
         case "score":
 
+            console.log(
+                "ENTRÓ A SCORE"
+            );
+
             result.sort(
                 (
                     a,
@@ -798,17 +804,11 @@ function ordenarJuegos(
                             0
                         );
 
-
                     const scoreB =
                         numeroSeguro(
                             b.score,
                             0
                         );
-
-
-                    /*
-                    * Mayor score primero.
-                    */
 
                     if (
                         scoreA !== scoreB
@@ -817,12 +817,6 @@ function ordenarJuegos(
                         return scoreB - scoreA;
 
                     }
-
-
-                    /*
-                    * En caso de empate,
-                    * ordenar alfabéticamente.
-                    */
 
                     return String(
                         a.objectname ?? ""
@@ -839,6 +833,26 @@ function ordenarJuegos(
 
                 }
             );
+
+
+            console.table(
+                result.slice(
+                    0,
+                    20
+                ).map(
+                    game => ({
+                        juego:
+                            game.objectname,
+
+                        score:
+                            game.score,
+
+                        peso:
+                            game.avgweight
+                    })
+                )
+            );
+
 
             break;
 
