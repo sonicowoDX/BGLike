@@ -820,7 +820,7 @@ function ordenarJuegos(
 
 
                     /*
-                    * Si tienen el mismo score,
+                    * En caso de empate,
                     * ordenar alfabéticamente.
                     */
 
