@@ -867,6 +867,8 @@ function ordenarJuegos(
 
                 }
             );
+            
+            break;
 
 
         case "weight-asc":
