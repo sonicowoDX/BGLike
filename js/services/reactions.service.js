@@ -363,20 +363,31 @@ export async function obtenerReaccionesColeccion(
 
     const allReactions = [];
 
-    const chunkSize = 100;
+
+    /*
+     * Supabase normalmente limita
+     * las consultas a 1000 filas.
+     *
+     * Por eso paginamos las
+     * reacciones.
+     */
+
+    const pageSize =
+        1000;
 
 
-    for (
-        let i = 0;
-        i < userIds.length;
-        i += chunkSize
+    let from =
+        0;
+
+
+    while (
+        true
     ) {
 
-        const chunk =
-            userIds.slice(
-                i,
-                i + chunkSize
-            );
+        const to =
+            from +
+            pageSize -
+            1;
 
 
         const {
@@ -389,7 +400,17 @@ export async function obtenerReaccionesColeccion(
             )
             .in(
                 "id_usuario",
-                chunk
+                userIds
+            )
+            .order(
+                "id",
+                {
+                    ascending: true
+                }
+            )
+            .range(
+                from,
+                to
             );
 
 
@@ -402,9 +423,32 @@ export async function obtenerReaccionesColeccion(
         }
 
 
+        const reactions =
+            data ?? [];
+
+
         allReactions.push(
-            ...(data ?? [])
+            ...reactions
         );
+
+
+        /*
+         * Si recibimos menos de 1000,
+         * llegamos a la última página.
+         */
+
+        if (
+            reactions.length <
+            pageSize
+        ) {
+
+            break;
+
+        }
+
+
+        from +=
+            pageSize;
 
     }
 
