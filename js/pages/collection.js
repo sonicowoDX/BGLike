@@ -2115,56 +2115,93 @@ function cerrarFeelingLucky() {
 
 function obtenerCandidatosFeelingLucky() {
 
-    return [...visibleGames]
-        .sort(
-            (
-                a,
-                b
-            ) => {
+    const orderedGames =
+        [...visibleGames]
+            .sort(
+                (
+                    a,
+                    b
+                ) => {
 
-                const scoreDifference =
-                    numeroSeguro(
-                        b.score,
-                        0
-                    ) -
-                    numeroSeguro(
-                        a.score,
-                        0
+                    const scoreA =
+                        numeroSeguro(
+                            a.score,
+                            0
+                        );
+
+
+                    const scoreB =
+                        numeroSeguro(
+                            b.score,
+                            0
+                        );
+
+
+                    if (
+                        scoreA !== scoreB
+                    ) {
+
+                        return scoreB - scoreA;
+
+                    }
+
+
+                    return String(
+                        a.objectname ?? ""
+                    ).localeCompare(
+                        String(
+                            b.objectname ?? ""
+                        ),
+                        "es",
+                        {
+                            sensitivity:
+                                "base"
+                        }
                     );
 
-
-                if (
-                    scoreDifference !== 0
-                ) {
-
-                    return scoreDifference;
-
                 }
+            );
 
 
-                /*
-                 * En empate usamos
-                 * my_rating como
-                 * desempate.
-                 */
+    /*
+     * Si hay 15 juegos o menos,
+     * entran todos.
+     */
 
-                return (
-                    numeroSeguro(
-                        b.my_rating,
-                        0
-                    ) -
-                    numeroSeguro(
-                        a.my_rating,
-                        0
-                    )
-                );
+    if (
+        orderedGames.length <= 15
+    ) {
 
-            }
-        )
-        .slice(
-            0,
-            15
+        return orderedGames;
+
+    }
+
+
+    /*
+     * El juego en la posición 15
+     * está en el índice 14.
+     */
+
+    const cutoffScore =
+        numeroSeguro(
+            orderedGames[14].score,
+            0
         );
+
+
+    /*
+     * Conservamos todos los juegos
+     * cuyo score sea igual o superior
+     * al score del puesto 15.
+     */
+
+    return orderedGames.filter(
+        game =>
+            numeroSeguro(
+                game.score,
+                0
+            ) >= cutoffScore
+    );
 
 }
 
