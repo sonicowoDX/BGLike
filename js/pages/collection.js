@@ -49,6 +49,8 @@ let luckyRunning = false;
 let currentImageGame =
     null;
 
+let activeQuickFilter =
+    null;
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -166,6 +168,56 @@ function cargarEncabezado(
 function inicializarEventos(
     session
 ) {
+    const quickFilterButtons =
+    document.querySelectorAll(
+        ".quick-filter-chip"
+    );
+
+
+    quickFilterButtons.forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const filter =
+                        button.dataset.quickFilter;
+
+
+                    /*
+                    * Pulsar nuevamente
+                    * el mismo chip lo limpia.
+                    */
+
+                    if (
+                        activeQuickFilter ===
+                        filter
+                    ) {
+
+                        activeQuickFilter =
+                            null;
+
+                    }
+                    else {
+
+                        activeQuickFilter =
+                            filter;
+
+                    }
+
+
+                    actualizarChipsRapidos();
+
+
+                    aplicarFiltros();
+
+                }
+            );
+
+        }
+    );
+
     const weightMin =
     document.getElementById(
         "weightMin"
@@ -813,6 +865,20 @@ function aplicarFiltros() {
 
                 }
 
+                /*
+                * Filtros rápidos.
+                */
+
+                if (
+                    !cumpleFiltroRapido(
+                        game
+                    )
+                ) {
+
+                    return false;
+
+                }
+
 
                 /*
                 * Filtro de búsqueda.
@@ -856,6 +922,55 @@ function aplicarFiltros() {
             games,
             sort
         );
+    
+    if (
+        activeQuickFilter ===
+        "top"
+    ) {
+
+        games.sort(
+            (
+                a,
+                b
+            ) => {
+
+                const scoreDifference =
+                    numeroSeguro(
+                        b.score,
+                        0
+                    ) -
+                    numeroSeguro(
+                        a.score,
+                        0
+                    );
+
+
+                if (
+                    scoreDifference !== 0
+                ) {
+
+                    return scoreDifference;
+
+                }
+
+
+                return String(
+                    a.objectname ?? ""
+                ).localeCompare(
+                    String(
+                        b.objectname ?? ""
+                    ),
+                    "es",
+                    {
+                        sensitivity:
+                            "base"
+                    }
+                );
+
+            }
+        );
+
+    }
 
 
     visibleGames =
@@ -2920,5 +3035,234 @@ function mostrarCompartirCopiado(
         },
         1800
     );
+
+}
+
+function actualizarChipsRapidos() {
+
+    const buttons =
+        document.querySelectorAll(
+            ".quick-filter-chip"
+        );
+
+
+    buttons.forEach(
+        button => {
+
+            const active =
+                button.dataset.quickFilter ===
+                activeQuickFilter;
+
+
+            button.classList.toggle(
+                "active",
+                active
+            );
+
+
+            button.setAttribute(
+                "aria-pressed",
+                String(
+                    active
+                )
+            );
+
+        }
+    );
+
+}
+
+function obtenerReaccionesJuegoSeleccionadas(
+    gameId
+) {
+
+    return allReactions.filter(
+        reaction => {
+
+            return (
+                Number(
+                    reaction.id_juego
+                ) ===
+                    Number(
+                        gameId
+                    )
+                &&
+                selectedPlayerIds.has(
+                    Number(
+                        reaction.id_usuario
+                    )
+                )
+            );
+
+        }
+    );
+
+}
+
+function cumpleFiltroRapido(
+    game
+) {
+
+    if (
+        !activeQuickFilter
+    ) {
+
+        return true;
+
+    }
+
+
+    const reactions =
+        obtenerReaccionesJuegoSeleccionadas(
+            game.id
+        );
+
+
+    switch (
+        activeQuickFilter
+    ) {
+
+        /*
+         * Score positivo.
+         */
+
+        case "top":
+
+            return (
+                Number(
+                    game.score
+                ) > 0
+            );
+
+
+        /*
+         * Al menos un favorito.
+         */
+
+        case "favorites":
+
+            return reactions.some(
+                reaction =>
+                    reaction.reaccion ===
+                    "FAVORITO"
+            );
+
+
+        /*
+         * Todos los presentes
+         * lo tienen como NO_JUGADO.
+         */
+
+        case "unplayed":
+
+            return (
+                reactions.length > 0
+                &&
+                reactions.length ===
+                    selectedPlayerIds.size
+                &&
+                reactions.every(
+                    reaction =>
+                        reaction.reaccion ===
+                        "NO_JUGADO"
+                )
+            );
+
+
+        /*
+         * Todos los presentes
+         * quieren jugarlo.
+         */
+
+        case "everyone":
+
+            return (
+                reactions.length > 0
+                &&
+                reactions.length ===
+                    selectedPlayerIds.size
+                &&
+                reactions.every(
+                    reaction =>
+                        reaction.reaccion ===
+                            "LIKE"
+                        ||
+                        reaction.reaccion ===
+                            "FAVORITO"
+                )
+            );
+
+
+        /*
+         * Tiene al menos una opinión
+         * positiva y una negativa.
+         */
+
+        case "controversial": {
+
+            const positiveCount =
+                reactions.filter(
+                    reaction =>
+                        reaction.reaccion === "LIKE"
+                        ||
+                        reaction.reaccion === "FAVORITO"
+                ).length;
+
+
+            const negativeCount =
+                reactions.filter(
+                    reaction =>
+                        reaction.reaccion === "DISLIKE"
+                        ||
+                        reaction.reaccion === "ODIAR"
+                ).length;
+
+
+            const noJugadoCount =
+                reactions.filter(
+                    reaction =>
+                        reaction.reaccion === "NO_JUGADO"
+                ).length;
+
+
+            const totalWithOpinion =
+                selectedPlayerIds.size -
+                noJugadoCount;
+
+
+            /*
+            * Necesitamos al menos
+            * dos personas con opinión.
+            */
+
+            if (
+                totalWithOpinion < 2
+            ) {
+
+                return false;
+
+            }
+
+
+            const required =
+                Math.floor(
+                    totalWithOpinion / 2
+                );
+
+
+            return (
+                positiveCount >= required
+                &&
+                negativeCount >= required
+            );
+
+        }
+
+
+        default:
+
+            return true;
+
+    }
 
 }
