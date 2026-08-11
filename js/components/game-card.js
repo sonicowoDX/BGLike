@@ -362,27 +362,29 @@ function crearPlaceholder(
 
     return `
 
-        <div class="game-image-placeholder">
+        <div
+            class="game-image-placeholder"
+            data-add-image
+            data-game-id="${escapeAttribute(
+                game.id
+            )}"
+            role="button"
+            tabindex="0"
+            title="Añadir link de imagen">
 
             <span class="placeholder-dice">
                 🎲
             </span>
 
+
             <small>
                 Imagen pendiente
             </small>
 
-            <button
-                type="button"
-                class="add-image-button"
-                data-add-image
-                data-game-id="${escapeAttribute(
-                    game.id
-                )}">
 
+            <span class="add-image-button">
                 + Añadir link de imagen
-
-            </button>
+            </span>
 
         </div>
 
