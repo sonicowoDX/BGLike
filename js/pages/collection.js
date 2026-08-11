@@ -655,6 +655,8 @@ async function cargarJuegos(
 
             recalcularMetricasConFiltros();
 
+            actualizarMatchGrupo();
+
             document.getElementById(
                 "gameCount"
             ).textContent =
@@ -1371,6 +1373,8 @@ async function cambiarReaccion(
 
         recalcularMetricasConFiltros();
 
+        actualizarMatchGrupo();
+
 
         actualizarReaccionVisual(
             card,
@@ -1956,6 +1960,10 @@ function recalcularMetricasConFiltros() {
 function actualizarMetricasYVista() {
 
     recalcularMetricasConFiltros();
+
+
+    actualizarMatchGrupo();
+
 
     aplicarFiltros();
 
@@ -3264,5 +3272,318 @@ function cumpleFiltroRapido(
             return true;
 
     }
+
+}
+
+const MATCH_REACTION_VALUES = {
+
+    ODIAR:
+        -2,
+
+    DISLIKE:
+        -1,
+
+    LIKE:
+        1,
+
+    FAVORITO:
+        2
+
+};
+
+function calcularMatchGrupo() {
+
+    const selectedIds =
+        [...selectedPlayerIds];
+
+
+    /*
+     * Se requieren mínimo
+     * dos jugadores.
+     */
+
+    if (
+        selectedIds.length < 2
+    ) {
+
+        return null;
+
+    }
+
+
+    let similarityTotal =
+        0;
+
+
+    let comparisons =
+        0;
+
+
+    /*
+     * Agrupamos las reacciones
+     * por juego.
+     */
+
+    const reactionsByGame =
+        new Map();
+
+
+    for (
+        const reaction
+        of allReactions
+    ) {
+
+        const userId =
+            Number(
+                reaction.id_usuario
+            );
+
+
+        if (
+            !selectedPlayerIds.has(
+                userId
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        /*
+         * NO_JUGADO no representa
+         * una preferencia.
+         */
+
+        if (
+            reaction.reaccion ===
+            "NO_JUGADO"
+        ) {
+
+            continue;
+
+        }
+
+
+        const value =
+            MATCH_REACTION_VALUES[
+                reaction.reaccion
+            ];
+
+
+        if (
+            value === undefined
+        ) {
+
+            continue;
+
+        }
+
+
+        const gameId =
+            Number(
+                reaction.id_juego
+            );
+
+
+        if (
+            !reactionsByGame.has(
+                gameId
+            )
+        ) {
+
+            reactionsByGame.set(
+                gameId,
+                []
+            );
+
+        }
+
+
+        reactionsByGame
+            .get(
+                gameId
+            )
+            .push({
+                userId,
+                value
+            });
+
+    }
+
+
+    /*
+     * Comparamos cada pareja
+     * dentro de cada juego.
+     */
+
+    for (
+        const reactions
+        of reactionsByGame.values()
+    ) {
+
+        if (
+            reactions.length < 2
+        ) {
+
+            continue;
+
+        }
+
+
+        for (
+            let i = 0;
+            i <
+            reactions.length - 1;
+            i++
+        ) {
+
+            for (
+                let j = i + 1;
+                j <
+                reactions.length;
+                j++
+            ) {
+
+                const difference =
+                    Math.abs(
+                        reactions[i].value -
+                        reactions[j].value
+                    );
+
+
+                /*
+                 * La distancia máxima
+                 * es 4:
+                 *
+                 * FAVORITO (+2)
+                 * vs
+                 * ODIAR (-2)
+                 */
+
+                const similarity =
+                    1 -
+                    (
+                        difference /
+                        4
+                    );
+
+
+                similarityTotal +=
+                    similarity;
+
+
+                comparisons++;
+
+            }
+
+        }
+
+    }
+
+
+    if (
+        comparisons === 0
+    ) {
+
+        return null;
+
+    }
+
+
+    return Math.round(
+        (
+            similarityTotal /
+            comparisons
+        ) *
+        100
+    );
+
+}
+
+function actualizarMatchGrupo() {
+
+    const container =
+        document.getElementById(
+            "groupMatch"
+        );
+
+
+    const valueElement =
+        document.getElementById(
+            "groupMatchValue"
+        );
+
+
+    if (
+        !container ||
+        !valueElement
+    ) {
+
+        return;
+
+    }
+
+
+    const match =
+        calcularMatchGrupo();
+
+
+    container.classList.remove(
+        "match-high",
+        "match-medium",
+        "match-low"
+    );
+
+
+    if (
+        match === null
+    ) {
+
+        valueElement.textContent =
+            "--";
+
+
+        container.title =
+            "Selecciona al menos dos jugadores con reacciones.";
+
+        return;
+
+    }
+
+
+    valueElement.textContent =
+        `${match}%`;
+
+
+    if (
+        match >= 80
+    ) {
+
+        container.classList.add(
+            "match-high"
+        );
+
+    }
+    else if (
+        match >= 50
+    ) {
+
+        container.classList.add(
+            "match-medium"
+        );
+
+    }
+    else {
+
+        container.classList.add(
+            "match-low"
+        );
+
+    }
+
+
+    container.title =
+        `Coincidencia de preferencias entre los jugadores seleccionados: ${match}%`;
 
 }
