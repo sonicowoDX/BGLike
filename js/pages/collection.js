@@ -168,6 +168,42 @@ function cargarEncabezado(
 function inicializarEventos(
     session
 ) {
+
+    const playingTimeMin =
+    document.getElementById(
+        "playingTimeMin"
+    );
+
+
+    const playingTimeMax =
+        document.getElementById(
+            "playingTimeMax"
+        );
+
+
+    const minimumScore =
+        document.getElementById(
+            "minimumScore"
+        );
+
+
+    playingTimeMin.addEventListener(
+        "input",
+        aplicarFiltros
+    );
+
+
+    playingTimeMax.addEventListener(
+        "input",
+        aplicarFiltros
+    );
+
+
+    minimumScore.addEventListener(
+        "input",
+        aplicarFiltros
+    );
+
     const quickFilterButtons =
     document.querySelectorAll(
         ".quick-filter-chip"
@@ -701,6 +737,50 @@ async function cargarJuegos(
 
 function aplicarFiltros() {
 
+    const playingTimeMinValue =
+    document.getElementById(
+        "playingTimeMin"
+    )
+        .value;
+
+
+    const playingTimeMaxValue =
+        document.getElementById(
+            "playingTimeMax"
+        )
+            .value;
+
+
+    const minimumScoreValue =
+        document.getElementById(
+            "minimumScore"
+        )
+            .value;
+
+
+    const playingTimeMin =
+        playingTimeMinValue === ""
+            ? null
+            : Number(
+                playingTimeMinValue
+            );
+
+
+    const playingTimeMax =
+        playingTimeMaxValue === ""
+            ? null
+            : Number(
+                playingTimeMaxValue
+            );
+
+
+    const minimumScore =
+        minimumScoreValue === ""
+            ? null
+            : Number(
+                minimumScoreValue
+            );
+
     const search =
         document.getElementById(
             "gameSearch"
@@ -859,6 +939,97 @@ function aplicarFiltros() {
                         playerCount < minPlayers
                         ||
                         playerCount > maxPlayers
+                    ) {
+
+                        return false;
+
+                    }
+
+                }
+
+                /*
+                * Filtro de duración.
+                *
+                * playingtime = 0 se considera
+                * duración desconocida.
+                */
+
+                if (
+                    playingTimeMin !== null
+                    ||
+                    playingTimeMax !== null
+                ) {
+
+                    const playingTime =
+                        Number(
+                            game.playingtime
+                        );
+
+
+                    /*
+                    * Sin duración conocida:
+                    * no participa cuando existe
+                    * un filtro de tiempo activo.
+                    */
+
+                    if (
+                        !Number.isFinite(
+                            playingTime
+                        )
+                        ||
+                        playingTime <= 0
+                    ) {
+
+                        return false;
+
+                    }
+
+
+                    if (
+                        playingTimeMin !== null
+                        &&
+                        playingTime <
+                            playingTimeMin
+                    ) {
+
+                        return false;
+
+                    }
+
+
+                    if (
+                        playingTimeMax !== null
+                        &&
+                        playingTime >
+                            playingTimeMax
+                    ) {
+
+                        return false;
+
+                    }
+
+                }
+
+                /*
+                * Filtro de score mínimo
+                * calculado con los jugadores
+                * actualmente seleccionados.
+                */
+
+                if (
+                    minimumScore !== null
+                ) {
+
+                    const gameScore =
+                        numeroSeguro(
+                            game.score,
+                            0
+                        );
+
+
+                    if (
+                        gameScore <
+                        minimumScore
                     ) {
 
                         return false;

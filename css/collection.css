@@ -2,15 +2,18 @@
 
     min-height: 100vh;
 
-    background:
-
-        radial-gradient(
-            circle at top right,
-            rgba(139, 92, 246, 0.10),
-            transparent 28%
-        ),
-
+    background-color:
         var(--bg-primary);
+
+    background-image:
+        radial-gradient(
+            circle 650px at top right,
+            rgba(139, 92, 246, 0.30),
+            transparent 100%
+        );
+
+    background-repeat:
+        no-repeat;
 
 }
 

@@ -19,7 +19,8 @@ export async function guardarJuegosNuevos(
                 avgweight: game.avgweight,
                 itemtype: game.itemtype,
                 minplayers: game.minplayers,
-                maxplayers: game.maxplayers
+                maxplayers: game.maxplayers,
+                playingtime:game.playingtime
             })
         );
 

@@ -293,7 +293,8 @@ export async function obtenerJuegosColeccion(
                 itemtype,
                 minplayers,
                 maxplayers,
-                image_url
+                image_url,
+                playingtime
             )
         `)
         .eq(

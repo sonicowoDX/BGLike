@@ -392,6 +392,105 @@
         </select>
 
     </div>
+
+    <div class="filter-group">
+
+        <div class="filter-heading">
+
+            <div>
+                <span class="filter-label">
+                    Tiempo de juego
+                </span>
+
+                <small>
+                    Duración aproximada en minutos.
+                </small>
+            </div>
+
+        </div>
+
+
+        <div class="weight-filter">
+
+
+            <div class="filter-input-field">
+
+
+                <label for="playingTimeMin">
+                    Mínimo
+                </label>
+
+
+                <input
+                    type="number"
+                    id="playingTimeMin"
+                    min="0"
+                    step="5"
+                    placeholder="0">
+
+
+            </div>
+
+
+
+            <span class="filter-range-separator">
+                –
+            </span>
+
+
+
+            <div class="filter-input-field">
+
+
+                <label for="playingTimeMax">
+                    Máximo
+                </label>
+
+
+                <input
+                    type="number"
+                    id="playingTimeMax"
+                    min="0"
+                    step="5"
+                    placeholder="Sin límite">
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="filter-group">
+
+        <div class="filter-heading">
+
+            <div>
+                <span class="filter-label">
+                    Score mínimo
+                </span>
+
+                <small>
+                    Puntuación mínima del grupo.
+                </small>
+            </div>
+
+        </div>
+
+
+        <div class="filter-input-field">
+
+            <input
+                type="number"
+                id="minimumScore"
+                step="1"
+                placeholder="Sin mínimo">
+
+        </div>
+
+    </div>
             </section>
 
             <section class="collection-filters">

@@ -269,6 +269,11 @@ function normalizeGame(
         maxplayers:
             parseInteger(
                 row.maxplayers
+            ),
+
+        playingtime:
+            parseInteger(
+                row.playingtime
             )
 
     };
