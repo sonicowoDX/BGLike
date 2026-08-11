@@ -381,11 +381,6 @@ function crearPlaceholder(
                 Link de imagen pendiente
             </small>
 
-
-            <span class="">
-                + Añadir link de imagen
-            </span>
-
         </div>
 
     `;
