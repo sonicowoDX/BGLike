@@ -455,15 +455,3 @@ function formatearCodigoColeccion(
         ?? "";
 
 }
-
-codeInput.addEventListener(
-    "input",
-    function () {
-
-        codeInput.value =
-            formatearCodigoColeccion(
-                codeInput.value
-            );
-
-    }
-);
