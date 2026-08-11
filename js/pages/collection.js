@@ -1066,10 +1066,6 @@ function ordenarJuegos(
 
         case "score":
 
-            console.log(
-                "ENTRÓ A SCORE"
-            );
-
             result.sort(
                 (
                     a,
@@ -1248,6 +1244,11 @@ function renderJuegos(
             game
         );
 
+        inicializarDetalleReacciones(
+            card,
+            game
+        );
+
 
         grid.appendChild(
             card
@@ -1399,11 +1400,6 @@ async function cambiarReaccion(
             result.reaccion
         );
 
-
-        console.log(
-            `${game.objectname}: ${result.reaccion}`
-        );
-
     }
     catch (
         error
@@ -1503,6 +1499,36 @@ function numeroSeguro(
     )
         ? number
         : fallback;
+
+}
+
+function escapeHTML(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -2146,6 +2172,11 @@ function obtenerCandidatosFeelingLucky() {
                     }
 
 
+                    /*
+                     * En empate,
+                     * ordenar alfabéticamente.
+                     */
+
                     return String(
                         a.objectname ?? ""
                     ).localeCompare(
@@ -2165,7 +2196,7 @@ function obtenerCandidatosFeelingLucky() {
 
     /*
      * Si hay 15 juegos o menos,
-     * entran todos.
+     * participan todos.
      */
 
     if (
@@ -2178,8 +2209,8 @@ function obtenerCandidatosFeelingLucky() {
 
 
     /*
-     * El juego en la posición 15
-     * está en el índice 14.
+     * Puesto 15 =
+     * índice 14.
      */
 
     const cutoffScore =
@@ -2190,9 +2221,29 @@ function obtenerCandidatosFeelingLucky() {
 
 
     /*
-     * Conservamos todos los juegos
-     * cuyo score sea igual o superior
-     * al score del puesto 15.
+     * Si el score del puesto 15
+     * es 0 o negativo,
+     * mantenemos estrictamente
+     * el TOP 15.
+     */
+
+    if (
+        cutoffScore <= 0
+    ) {
+
+        return orderedGames.slice(
+            0,
+            15
+        );
+
+    }
+
+
+    /*
+     * Si el score límite es
+     * positivo, incluimos todos
+     * los juegos empatados con
+     * el puesto 15.
      */
 
     return orderedGames.filter(
@@ -3622,5 +3673,320 @@ function actualizarMatchGrupo() {
 
     container.title =
         `Coincidencia de preferencias entre los jugadores seleccionados: ${match}%`;
+
+}
+
+function obtenerNombreUsuario(
+    userId
+) {
+
+    const user =
+        allUsers.find(
+            item =>
+                Number(
+                    item.id
+                ) ===
+                Number(
+                    userId
+                )
+        );
+
+
+    return (
+        user?.apodo
+        ??
+        "Usuario"
+    );
+
+}
+
+function obtenerDetalleReaccionesJuego(
+    gameId
+) {
+
+    const groups = {
+
+        ODIAR: [],
+        DISLIKE: [],
+        NO_JUGADO: [],
+        LIKE: [],
+        FAVORITO: []
+
+    };
+
+
+    const reactions =
+        allReactions.filter(
+            reaction =>
+                Number(
+                    reaction.id_juego
+                ) ===
+                    Number(
+                        gameId
+                    )
+                &&
+                selectedPlayerIds.has(
+                    Number(
+                        reaction.id_usuario
+                    )
+                )
+        );
+
+
+    for (
+        const reaction
+        of reactions
+    ) {
+
+        if (
+            !groups[
+                reaction.reaccion
+            ]
+        ) {
+
+            continue;
+
+        }
+
+
+        groups[
+            reaction.reaccion
+        ].push(
+            obtenerNombreUsuario(
+                reaction.id_usuario
+            )
+        );
+
+    }
+
+
+    return groups;
+
+}
+
+function crearHTMLDetalleReacciones(
+    game
+) {
+
+    const detail =
+        obtenerDetalleReaccionesJuego(
+            game.id
+        );
+
+
+    const reactions = [
+
+        {
+            type:
+                "ODIAR",
+
+            emoji:
+                "💀"
+        },
+
+        {
+            type:
+                "DISLIKE",
+
+            emoji:
+                "👎"
+        },
+
+        {
+            type:
+                "NO_JUGADO",
+
+            emoji:
+                "❔"
+        },
+
+        {
+            type:
+                "LIKE",
+
+            emoji:
+                "👍"
+        },
+
+        {
+            type:
+                "FAVORITO",
+
+            emoji:
+                "⭐"
+        }
+
+    ];
+
+
+    const rows =
+        reactions
+            .filter(
+                item =>
+                    detail[
+                        item.type
+                    ].length > 0
+            )
+            .map(
+                item => {
+
+                    const users =
+                        detail[
+                            item.type
+                        ];
+
+
+                    return `
+
+                        <div
+                            class="reaction-detail-row">
+
+                            <span
+                                class="reaction-detail-emoji">
+
+                                ${item.emoji}
+
+                            </span>
+
+
+                            <span
+                                class="reaction-detail-users">
+
+                                ${users
+                                    .map(
+                                        escapeHTML
+                                    )
+                                    .join(
+                                        ", "
+                                    )}
+
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join(
+                ""
+            );
+
+
+    return `
+
+        <div class="reaction-detail-title">
+
+            Reacciones del grupo
+
+        </div>
+
+
+        <div class="reaction-detail-list">
+
+            ${
+                rows
+                ||
+                `
+                    <div
+                        class="reaction-detail-empty">
+
+                        No hay reacciones
+                        de los jugadores seleccionados.
+
+                    </div>
+                `
+            }
+
+        </div>
+
+    `;
+
+}
+
+function inicializarDetalleReacciones(
+    card,
+    game
+) {
+    const counts =
+    card.querySelector(
+        "[data-reaction-counts]"
+    );
+
+
+    if (counts) {
+
+        counts.addEventListener(
+            "click",
+            function (
+                event
+            ) {
+
+                event.stopPropagation();
+
+
+                if (
+                    detail.hidden
+                ) {
+
+                    mostrarDetalle();
+
+                }
+                else {
+
+                    ocultarDetalle();
+
+                }
+
+            }
+        );
+
+    }
+
+    const detail =
+        card.querySelector(
+            "[data-reaction-detail]"
+        );
+
+
+    if (!detail) {
+
+        return;
+
+    }
+
+
+    function mostrarDetalle() {
+
+        detail.innerHTML =
+            crearHTMLDetalleReacciones(
+                game
+            );
+
+
+        detail.hidden =
+            false;
+
+    }
+
+
+    function ocultarDetalle() {
+
+        detail.hidden =
+            true;
+
+    }
+
+
+    card.addEventListener(
+        "mouseenter",
+        mostrarDetalle
+    );
+
+
+    card.addEventListener(
+        "mouseleave",
+        ocultarDetalle
+    );
 
 }

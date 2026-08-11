@@ -76,7 +76,9 @@ export function crearGameCard(
             </div>
 
 
-            <div class="game-reaction-counts">
+            <div
+                class="game-reaction-counts"
+                data-reaction-counts>
 
                 <span
                     title="Odiar"
@@ -251,6 +253,12 @@ export function crearGameCard(
                 ⭐
             </button>
 
+        </div>
+
+        <div
+            class="reaction-detail"
+            data-reaction-detail
+            hidden>
         </div>
 
 

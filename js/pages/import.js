@@ -412,12 +412,6 @@ async function processFile(
             "success"
         );
 
-
-        console.log(
-            "Juegos preparados:",
-            importedGames
-        );
-
     }
     catch (
         error
@@ -888,29 +882,6 @@ async function importarColeccion(
             created
                 ? "Colección creada ✓"
                 : "Colección actualizada ✓";
-
-
-        console.log(
-            "Importación terminada correctamente."
-        );
-
-
-        console.log(
-            "Código:",
-            collection.codigo
-        );
-
-
-        console.log(
-            "ID colección:",
-            collection.id
-        );
-
-
-        console.log(
-            "Juegos:",
-            total
-        );
 
     }
     catch (
