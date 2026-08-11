@@ -50,55 +50,20 @@
                     y encuentren qué jugar.
                 </p>
 
-
-                <div class="form-group">
-
-                    <label for="collectionCode">
-                        Código de colección
-                    </label>
-
-                    <input
-                        type="text"
-                        id="collectionCode"
-                        name="collectionCode"
-                        maxlength="50"
-                        autocomplete="off"
-                        placeholder="Ej. VIERNESBG">
-
-                    <span
-                        id="collectionCodeError"
-                        class="form-error"
-                        aria-live="polite">
-                    </span>
-
-                </div>
-
-
                 <div class="home-actions">
 
-                    <button
-                        type="button"
-                        id="btnImportCollection"
-                        class="home-action home-action-primary">
+                    <div class="form-group">
 
-                        <span class="action-icon">
-                            📁
+                        <label for="collectionCode">
+                            Código de colección
+                        </label>
+
+                        <input type="text" id="collectionCode" name="collectionCode" maxlength="50" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX">
+
+                        <span id="collectionCodeError" class="form-error" aria-live="polite">
                         </span>
 
-                        <span class="action-content">
-
-                            <strong>
-                                Cargar colección
-                            </strong>
-
-                            <small>
-                                Importa o actualiza un CSV de BGG
-                            </small>
-
-                        </span>
-
-                    </button>
-
+                    </div>
 
                     <button
                         type="button"
@@ -122,6 +87,35 @@
                         </span>
 
                     </button>
+
+                    <button
+                        type="button"
+                        id="btnImportCollection"
+                        class="home-action home-action-primary">
+
+
+                        <span class="action-icon">
+                            📁
+                        </span>
+
+
+                        <span class="action-content">
+
+                            <strong>
+                                Crear o actualizar colección
+                            </strong>
+
+
+                            <small>
+                                Importa tu colección desde un CSV de BGG
+                            </small>
+
+                        </span>
+
+
+                    </button>
+
+                    
 
                 </div>
 

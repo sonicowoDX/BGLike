@@ -2,89 +2,6 @@ import {
     supabase
 } from "../config/supabase.js";
 
-
-export async function obtenerOCrearColeccion(
-    codigo
-) {
-
-    const codigoNormalizado =
-        codigo
-            .trim()
-            .toUpperCase();
-
-
-    const {
-        data: coleccionExistente,
-        error: errorConsulta
-    } = await supabase
-        .from("codigos_coleccion")
-        .select(
-            "id, codigo"
-        )
-        .eq(
-            "codigo",
-            codigoNormalizado
-        )
-        .maybeSingle();
-
-
-    if (errorConsulta) {
-
-        throw new Error(
-            `Error buscando colección: ${errorConsulta.message}`
-        );
-
-    }
-
-
-    if (coleccionExistente) {
-
-        return {
-            collection:
-                coleccionExistente,
-
-            created:
-                false
-        };
-
-    }
-
-
-    const {
-        data: nuevaColeccion,
-        error: errorInsert
-    } = await supabase
-        .from("codigos_coleccion")
-        .insert({
-            codigo:
-                codigoNormalizado
-        })
-        .select(
-            "id, codigo"
-        )
-        .single();
-
-
-    if (errorInsert) {
-
-        throw new Error(
-            `Error creando colección: ${errorInsert.message}`
-        );
-
-    }
-
-
-    return {
-        collection:
-            nuevaColeccion,
-
-        created:
-            true
-    };
-
-}
-
-
 export async function sincronizarJuegosColeccion(
     collectionId,
     importedGames,
@@ -412,5 +329,126 @@ export async function obtenerJuegosColeccion(
                 ...item.juegos
             })
         );
+
+}
+
+function generarCodigoColeccion() {
+
+    const grupos = [];
+
+
+    for (
+        let grupo = 0;
+        grupo < 4;
+        grupo++
+    ) {
+
+        const numeros =
+            new Uint32Array(
+                4
+            );
+
+
+        crypto.getRandomValues(
+            numeros
+        );
+
+
+        let bloque = "";
+
+
+        for (
+            const numero
+            of numeros
+        ) {
+
+            bloque +=
+                String(
+                    numero % 10
+                );
+
+        }
+
+
+        grupos.push(
+            bloque
+        );
+
+    }
+
+
+    return grupos.join(
+        "-"
+    );
+
+}
+
+export async function crearColeccionAutomatica() {
+
+    const maxIntentos =
+        10;
+
+
+    for (
+        let intento = 0;
+        intento < maxIntentos;
+        intento++
+    ) {
+
+        const codigo =
+            generarCodigoColeccion();
+
+
+        const {
+            data,
+            error
+        } = await supabase
+            .from(
+                "codigos_coleccion"
+            )
+            .insert({
+                codigo
+            })
+            .select(
+                "id, codigo"
+            )
+            .single();
+
+
+        if (!error) {
+
+            return data;
+
+        }
+
+
+        /*
+         * 23505 =
+         * unique violation.
+         *
+         * Si por una coincidencia
+         * extraordinaria ya existe,
+         * generamos otro.
+         */
+
+        if (
+            error.code === "23505"
+        ) {
+
+            continue;
+
+        }
+
+
+        throw new Error(
+            `Error creando colección: ${error.message}`
+        );
+
+    }
+
+
+    throw new Error(
+        "No fue posible generar un código de colección."
+    );
 
 }

@@ -426,3 +426,44 @@ function showMessage(
         false;
 
 }
+
+function formatearCodigoColeccion(
+    value
+) {
+
+    const digits =
+        String(
+            value ?? ""
+        )
+            .replace(
+                /\D/g,
+                ""
+            )
+            .slice(
+                0,
+                16
+            );
+
+
+    return digits
+        .match(
+            /.{1,4}/g
+        )
+        ?.join(
+            "-"
+        )
+        ?? "";
+
+}
+
+codeInput.addEventListener(
+    "input",
+    function () {
+
+        codeInput.value =
+            formatearCodigoColeccion(
+                codeInput.value
+            );
+
+    }
+);

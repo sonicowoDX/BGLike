@@ -7,10 +7,6 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        console.log(
-            "BGLike iniciado correctamente."
-        );
-
         inicializarHome();
 
         probarConexionSupabase();
@@ -41,18 +37,8 @@ function inicializarHome() {
         "click",
         function () {
 
-            const codigo =
-                obtenerCodigoColeccion(
-                    inputCollectionCode
-                );
-
-            if (!codigo) {
-                return;
-            }
-
-
             window.location.href =
-                `./pages/importar.html?codigo=${encodeURIComponent(codigo)}`;
+                "./pages/importar.html";
 
         }
     );
@@ -239,10 +225,5 @@ async function probarConexionSupabase() {
         return;
 
     }
-
-
-    console.log(
-        "Conexión con Supabase correcta."
-    );
 
 }

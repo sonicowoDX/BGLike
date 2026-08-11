@@ -40,7 +40,7 @@
                 </div>
 
                 <h1>
-                    Cargar colección
+                    Importar colección
                 </h1>
 
                 <p>
@@ -51,15 +51,101 @@
             </header>
 
 
-            <div class="collection-code-box">
+            <section
+                id="collectionCreated"
+                class="collection-created"
+                hidden>
 
-                <span>
+                <div class="created-icon">
+                    🎉
+                </div>
+
+                <h2>
+                    ¡Colección creada!
+                </h2>
+
+                <p>
+                    Guarda este código. Lo necesitarás
+                    para compartir o actualizar tu colección.
+                </p>
+
+
+                <div class="created-code">
+
+                    <strong
+                        id="createdCollectionCode">
+                        ----
+                    </strong>
+
+                    <button
+                        type="button"
+                        id="btnCopyCreatedCode">
+
+                        📋 Copiar
+
+                    </button>
+
+                </div>
+
+
+                <p class="created-warning">
+
+                    BGLike no utiliza cuentas.
+                    Guarda este código en un lugar seguro.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    id="btnEnterCreatedCollection"
+                    class="primary-button">
+
+                    Entrar a la colección
+
+                </button>
+
+            </section>
+
+            <div class="import-mode-selector">
+
+                <button
+                    type="button"
+                    id="btnModeCreate"
+                    class="import-mode-button active">
+
+                    Crear nueva colección
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnModeUpdate"
+                    class="import-mode-button">
+
+                    Actualizar colección existente
+
+                </button>
+
+            </div>
+
+            <div
+                id="existingCollectionCodeGroup"
+                class="form-group"
+                hidden>
+
+                <label for="existingCollectionCode">
                     Código de colección
-                </span>
+                </label>
 
-                <strong id="collectionCode">
-                    -
-                </strong>
+
+                <input
+                    type="text"
+                    id="existingCollectionCode"
+                    maxlength="19"
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
+                    autocomplete="off">
 
             </div>
 

@@ -2,6 +2,14 @@ import {
     parseBGGCSV
 } from "../utils/csv.js";
 
+
+import {
+    crearColeccionAutomatica,
+    obtenerColeccionPorCodigo,
+    sincronizarJuegosColeccion
+} from "../services/collections.service.js";
+
+
 import {
     guardarJuegosNuevos,
     obtenerJuegosPorObjectIds
@@ -9,15 +17,125 @@ import {
 
 
 import {
-    obtenerOCrearColeccion,
-    sincronizarJuegosColeccion
-} from "../services/collections.service.js";
-
-
-import {
     crearReaccionesFaltantesColeccion
 } from "../services/reactions.service.js";
 
+
+let importMode =
+    "create";
+
+const btnModeCreate =
+    document.getElementById(
+        "btnModeCreate"
+    );
+
+
+const btnModeUpdate =
+    document.getElementById(
+        "btnModeUpdate"
+    );
+
+
+const existingCollectionCodeGroup =
+    document.getElementById(
+        "existingCollectionCodeGroup"
+    );
+
+
+const existingCollectionCode =
+    document.getElementById(
+        "existingCollectionCode"
+    );
+
+btnModeCreate.addEventListener(
+    "click",
+    function () {
+
+        importMode =
+            "create";
+
+
+        btnModeCreate.classList.add(
+            "active"
+        );
+
+
+        btnModeUpdate.classList.remove(
+            "active"
+        );
+
+
+        existingCollectionCodeGroup.hidden =
+            true;
+
+
+        existingCollectionCode.value =
+            "";
+
+    }
+);
+
+
+btnModeUpdate.addEventListener(
+    "click",
+    function () {
+
+        importMode =
+            "update";
+
+
+        btnModeUpdate.classList.add(
+            "active"
+        );
+
+
+        btnModeCreate.classList.remove(
+            "active"
+        );
+
+
+        existingCollectionCodeGroup.hidden =
+            false;
+
+
+        existingCollectionCode.focus();
+
+    }
+);
+
+
+document.getElementById(
+    "btnCopyCreatedCode"
+)
+    .addEventListener(
+        "click",
+        copiarCodigoColeccion
+    );
+
+document.getElementById(
+    "btnEnterCreatedCollection"
+)
+    .addEventListener(
+        "click",
+        function () {
+
+            const code =
+                document.getElementById(
+                    "createdCollectionCode"
+                )
+                    .textContent
+                    .trim();
+
+
+            window.location.href =
+                `./unirse.html?codigo=${
+                    encodeURIComponent(
+                        code
+                    )
+                }`;
+
+        }
+    );
 
 let importedGames = [];
 
@@ -31,53 +149,63 @@ document.addEventListener(
     }
 );
 
+btnModeCreate.addEventListener(
+    "click",
+    function () {
+
+        importMode =
+            "create";
+
+
+        btnModeCreate.classList.add(
+            "active"
+        );
+
+
+        btnModeUpdate.classList.remove(
+            "active"
+        );
+
+
+        existingCollectionCodeGroup.hidden =
+            true;
+
+    }
+);
+
+
+btnModeUpdate.addEventListener(
+    "click",
+    function () {
+
+        importMode =
+            "update";
+
+
+        btnModeUpdate.classList.add(
+            "active"
+        );
+
+
+        btnModeCreate.classList.remove(
+            "active"
+        );
+
+
+        existingCollectionCodeGroup.hidden =
+            false;
+
+    }
+);
+
 
 function initializeImportPage() {
-
-    loadCollectionCode();
 
     initializeFileInput();
 
     initializeContinueButton();
 
 }
-
-
-function loadCollectionCode() {
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const code =
-        params.get(
-            "codigo"
-        );
-
-
-    if (!code) {
-
-        window.location.href =
-            "../index.html";
-
-        return;
-
-    }
-
-
-    const collectionCode =
-        document.getElementById(
-            "collectionCode"
-        );
-
-
-    collectionCode.textContent =
-        code;
-
-}
-
 
 function initializeFileInput() {
 
@@ -549,22 +677,6 @@ async function importarColeccion(
     button
 ) {
 
-    const codigo =
-        obtenerCodigoActual();
-
-
-    if (!codigo) {
-
-        showMessage(
-            "No se encontró el código de colección.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
     const textoOriginal =
         button.textContent;
 
@@ -587,25 +699,62 @@ async function importarColeccion(
 
         /*
          * 1.
-         * Crear o recuperar
-         * el código de colección.
+         * Crear una colección nueva
+         * o recuperar una existente.
          */
 
-        const {
-            collection,
-            created
-        } =
-            await obtenerOCrearColeccion(
-                codigo
-            );
+        let collection;
+
+        let created =
+            false;
 
 
-        console.log(
-            created
-                ? "Colección creada:"
-                : "Colección existente:",
-            collection
-        );
+        if (
+            importMode === "create"
+        ) {
+
+            collection =
+                await crearColeccionAutomatica();
+
+
+            created =
+                true;
+
+        }
+        else {
+
+            const codigo =
+                document.getElementById(
+                    "existingCollectionCode"
+                )
+                    .value
+                    .trim();
+
+
+            if (!codigo) {
+
+                throw new Error(
+                    "Ingresa el código de la colección que deseas actualizar."
+                );
+
+            }
+
+
+            collection =
+                await obtenerColeccionPorCodigo(
+                    codigo
+                );
+
+
+            if (!collection) {
+
+                throw new Error(
+                    "No existe una colección con ese código."
+                );
+
+            }
+
+        }
 
 
         /*
@@ -648,6 +797,7 @@ async function importarColeccion(
                 importedGames.length
             );
 
+
             console.warn(
                 "Cantidad encontrada en BD:",
                 juegosRegistrados.length
@@ -659,6 +809,12 @@ async function importarColeccion(
         /*
          * 4.
          * Sincronizar colección.
+         *
+         * Si es nueva:
+         * crea todas las relaciones.
+         *
+         * Si ya existe:
+         * agrega y elimina según CSV.
          */
 
         const total =
@@ -668,12 +824,13 @@ async function importarColeccion(
                 juegosRegistrados
             );
 
+
         /*
-        * 4.1.
-        * Crear NO_JUGADO para las
-        * combinaciones usuario/juego
-        * que todavía no existan.
-        */
+         * 4.1.
+         * Crear NO_JUGADO para las
+         * combinaciones usuario/juego
+         * que todavía no existan.
+         */
 
         await crearReaccionesFaltantesColeccion(
             collection.id
@@ -682,19 +839,55 @@ async function importarColeccion(
 
         /*
          * 5.
-         * Resultado.
+         * Guardar referencia local.
          */
 
-        showMessage(
-            created
-                ? `Colección creada correctamente con ${total} juegos.`
-                : `Colección actualizada correctamente con ${total} juegos.`,
-            "success"
+        localStorage.setItem(
+            "bglike_owner_collection_code",
+            collection.codigo
         );
 
 
+        localStorage.setItem(
+            "bglike_owner_collection_id",
+            String(
+                collection.id
+            )
+        );
+
+
+        /*
+         * 6.
+         * Resultado.
+         */
+
+        if (created) {
+
+            showMessage(
+                `Colección creada correctamente con ${total} juegos.`,
+                "success"
+            );
+
+
+            mostrarColeccionCreada(
+                collection
+            );
+
+        }
+        else {
+
+            showMessage(
+                `Colección actualizada correctamente con ${total} juegos.`,
+                "success"
+            );
+
+        }
+
+
         button.textContent =
-            "Colección importada ✓";
+            created
+                ? "Colección creada ✓"
+                : "Colección actualizada ✓";
 
 
         console.log(
@@ -749,25 +942,6 @@ async function importarColeccion(
     }
 
 }
-
-
-
-function obtenerCodigoActual() {
-
-    const element =
-        document.getElementById(
-            "collectionCode"
-        );
-
-
-    return element
-        ?.textContent
-        ?.trim()
-        ?.toUpperCase()
-        || null;
-
-}
-
 
 function isCSVFile(
     file
@@ -971,3 +1145,181 @@ function escapeHTML(
         );
 
 }
+
+async function copiarCodigoColeccion() {
+
+    const code =
+        document.getElementById(
+            "createdCollectionCode"
+        )
+            .textContent
+            .trim();
+
+
+    const button =
+        document.getElementById(
+            "btnCopyCreatedCode"
+        );
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            code
+        );
+
+
+        const original =
+            button.textContent;
+
+
+        button.textContent =
+            "✓ Copiado";
+
+
+        setTimeout(
+            function () {
+
+                button.textContent =
+                    original;
+
+            },
+            1500
+        );
+
+    }
+    catch {
+
+        window.prompt(
+            "Copia tu código:",
+            code
+        );
+
+    }
+
+}
+
+function mostrarColeccionCreada(
+    collection
+) {
+
+    const section =
+        document.getElementById(
+            "collectionCreated"
+        );
+
+
+    const code =
+        document.getElementById(
+            "createdCollectionCode"
+        );
+
+
+    code.textContent =
+        collection.codigo;
+
+
+    section.hidden =
+        false;
+
+
+    section.scrollIntoView({
+        behavior:
+            "smooth",
+
+        block:
+            "center"
+    });
+
+}
+
+const btnCopyCreatedCode =
+    document.getElementById(
+        "btnCopyCreatedCode"
+    );
+
+
+btnCopyCreatedCode.addEventListener(
+    "click",
+    async function () {
+
+        const code =
+            document.getElementById(
+                "createdCollectionCode"
+            )
+                .textContent
+                .trim();
+
+
+        const originalText =
+            btnCopyCreatedCode.textContent;
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                code
+            );
+
+
+            btnCopyCreatedCode.textContent =
+                "✓ Copiado";
+
+
+            setTimeout(
+                function () {
+
+                    btnCopyCreatedCode.textContent =
+                        originalText;
+
+                },
+                1500
+            );
+
+        }
+        catch {
+
+            window.prompt(
+                "Copia tu código:",
+                code
+            );
+
+        }
+
+    }
+);
+
+const btnEnterCreatedCollection =
+    document.getElementById(
+        "btnEnterCreatedCollection"
+    );
+
+
+btnEnterCreatedCollection.addEventListener(
+    "click",
+    function () {
+
+        const code =
+            document.getElementById(
+                "createdCollectionCode"
+            )
+                .textContent
+                .trim();
+
+
+        if (!code) {
+
+            return;
+
+        }
+
+
+        window.location.href =
+            `./unirse.html?codigo=${
+                encodeURIComponent(
+                    code
+                )
+            }`;
+
+    }
+);
