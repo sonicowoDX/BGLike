@@ -378,7 +378,7 @@ function crearPlaceholder(
 
 
             <small>
-                Imagen pendiente
+                Link de imagen pendiente
             </small>
 
 
