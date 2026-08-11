@@ -912,3 +912,26 @@
         blur(4px);
 
 }
+
+.add-image-text {
+
+    margin-top: 6px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    color:
+        var(--accent);
+
+    opacity: 0.85;
+
+}
+
+
+.game-image-placeholder:hover
+.add-image-text {
+
+    opacity: 1;
+
+}
