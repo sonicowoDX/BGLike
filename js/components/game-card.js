@@ -382,7 +382,7 @@ function crearPlaceholder(
             </small>
 
 
-            <span class="add-image-text">
+            <span class="">
                 + Añadir link de imagen
             </span>
 

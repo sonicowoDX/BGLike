@@ -165,10 +165,8 @@
 }
 
 
-.game-image-placeholder span {
-
+.placeholder-dice {
     font-size: 48px;
-
 }
 
 
@@ -915,23 +913,36 @@
 
 .add-image-text {
 
+    display: block;
+
     margin-top: 6px;
 
-    font-size: 11px;
+    font-size: 12px;
+
+    line-height: 1.2;
 
     font-weight: 600;
 
     color:
         var(--accent);
 
-    opacity: 0.85;
-
 }
 
 
-.game-image-placeholder:hover
+.game-image-placeholder
 .add-image-text {
 
-    opacity: 1;
+    display: block;
+
+    margin-top: 6px;
+
+    font-size: 12px;
+
+    line-height: 1.2;
+
+    font-weight: 600;
+
+    color:
+        var(--accent);
 
 }
