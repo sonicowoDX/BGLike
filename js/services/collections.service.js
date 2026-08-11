@@ -272,6 +272,7 @@ export async function obtenerColeccionPorCodigo(
 
 }
 
+/*CARGAR JUEGOS DE LA COLECCIÓN*/
 export async function obtenerJuegosColeccion(
     collectionId
 ) {

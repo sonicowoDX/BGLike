@@ -903,7 +903,7 @@
     font-weight:
         700;
 
-    /* Safari (iOS and macOS) support */
+    /* Safari (iOS and mac) support */
     -webkit-backdrop-filter:
         blur(4px);
 

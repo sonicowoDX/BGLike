@@ -99,6 +99,7 @@ a {
 
 }
 
+/*EVITAR EL SCROLL DE LAS IMÁGENES DE IE*/
 [hidden] {
     display: none !important;
 }

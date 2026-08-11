@@ -969,7 +969,8 @@ function aplicarFiltros() {
                     /*
                     * Sin duración conocida:
                     * no participa cuando existe
-                    * un filtro de tiempo activo.
+                    * un filtro de tiempo activo,
+                    * o cuando no hay jugadores.
                     */
 
                     if (
