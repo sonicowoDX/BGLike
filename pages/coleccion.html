@@ -58,9 +58,16 @@
                     Jugando como
                 </span>
 
-                <strong id="currentNickname">
+                <button
+                    type="button"
+                    id="btnChangeUser"
+                    class="change-user-button">
+
+                    <strong id="currentNickname">
                     -
-                </strong>
+                    </strong>
+
+                </button>
 
 
                 <button
@@ -69,16 +76,6 @@
                     class="share-collection-button">
 
                     🔗 Compartir
-
-                </button>
-
-
-                <button
-                    type="button"
-                    id="btnChangeUser"
-                    class="change-user-button">
-
-                    Cambiar
 
                 </button>
 
@@ -169,27 +166,170 @@
                     </option>
 
                     <option value="rating-desc">
-                        Mi rating: mayor primero
+                        Rating: mayor primero
                     </option>
 
                     <option value="rating-asc">
-                        Mi rating: menor primero
+                        Rating: menor primero
                     </option>
 
                     <option value="weight-desc">
-                        Mayor peso
+                        Peso: mayor primero
                     </option>
 
                     <option value="weight-asc">
-                        Menor peso
+                        Peso: menor primero
                     </option>
 
                     <option value="score">
-                        Score (mayor primero)
+                        Score: mayor primero
                     </option>
 
                 </select>
 
+            </section>
+
+            <section class="collection-filters">
+
+                <div class="filter-group">
+
+    <div class="filter-heading">
+
+        <div>
+            <span class="filter-label">
+                Peso
+            </span>
+
+            <small>
+                Filtra por complejidad del juego.
+            </small>
+        </div>
+
+    </div>
+
+
+    <div class="weight-filter">
+
+        <div class="filter-input-field">
+
+            <label for="weightMin">
+                Mínimo
+            </label>
+
+            <input
+                type="number"
+                id="weightMin"
+                min="0"
+                max="5"
+                step="0.1"
+                placeholder="0">
+
+        </div>
+
+
+        <span class="filter-range-separator">
+            –
+        </span>
+
+
+        <div class="filter-input-field">
+
+            <label for="weightMax">
+                Máximo
+            </label>
+
+            <input
+                type="number"
+                id="weightMax"
+                min="0"
+                max="5"
+                step="0.1"
+                placeholder="5">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="filter-group">
+
+    <div class="filter-heading">
+
+        <div>
+            <span class="filter-label">
+                Cantidad de jugadores
+            </span>
+
+            <small>
+                Independiente de los jugadores presentes.
+            </small>
+        </div>
+
+    </div>
+
+
+    <select
+        id="playerCountFilter"
+        class="player-count-filter"
+        title="Cantidad de jugadores">
+
+            <option value="">
+                Cualquier cantidad
+            </option>
+
+            <option value="1">
+                1 jugador
+            </option>
+
+            <option value="2">
+                2 jugadores
+            </option>
+
+            <option value="3">
+                3 jugadores
+            </option>
+
+            <option value="4">
+                4 jugadores
+            </option>
+
+            <option value="5">
+                5 jugadores
+            </option>
+
+            <option value="6">
+                6 jugadores
+            </option>
+
+            <option value="7">
+                7 jugadores
+            </option>
+
+            <option value="8">
+                8 jugadores
+            </option>
+
+            <option value="9">
+                9 jugadores
+            </option>
+
+            <option value="10">
+                10 jugadores
+            </option>
+
+            <option value="11">
+                11 jugadores
+            </option>
+
+            <option value="12">
+                12 jugadores
+            </option>
+
+        </select>
+
+    </div>
             </section>
 
             <section class="collection-filters">

@@ -452,7 +452,7 @@ export async function obtenerReaccionesColeccion(
 
     }
 
-
+    
     return allReactions;
 
 }

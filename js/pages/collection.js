@@ -166,6 +166,41 @@ function cargarEncabezado(
 function inicializarEventos(
     session
 ) {
+    const weightMin =
+    document.getElementById(
+        "weightMin"
+    );
+
+
+    const weightMax =
+        document.getElementById(
+            "weightMax"
+        );
+
+
+    const playerCountFilter =
+        document.getElementById(
+            "playerCountFilter"
+        );
+
+
+    weightMin.addEventListener(
+        "input",
+        aplicarFiltros
+    );
+
+
+    weightMax.addEventListener(
+        "input",
+        aplicarFiltros
+    );
+
+
+    playerCountFilter.addEventListener(
+        "change",
+        aplicarFiltros
+    );
+
     const shareCollection =
         document.getElementById(
             "btnShareCollection"
@@ -626,7 +661,49 @@ function aplicarFiltros() {
             "gameSort"
         )
             .value;
+    
+    const weightMinValue =
+    document.getElementById(
+        "weightMin"
+    )
+        .value;
 
+    const weightMaxValue =
+        document.getElementById(
+            "weightMax"
+        )
+            .value;
+
+
+    const playerCountValue =
+        document.getElementById(
+            "playerCountFilter"
+        )
+            .value;
+
+
+    const weightMin =
+        weightMinValue === ""
+            ? null
+            : Number(
+                weightMinValue
+            );
+
+
+    const weightMax =
+        weightMaxValue === ""
+            ? null
+            : Number(
+                weightMaxValue
+            );
+
+
+    const playerCount =
+        playerCountValue === ""
+            ? null
+            : Number(
+                playerCountValue
+            );
 
     let games =
         allGames.filter(
@@ -649,6 +726,90 @@ function aplicarFiltros() {
                 ) {
 
                     return false;
+
+                }
+
+                /*
+                * Filtro de peso.
+                */
+
+                const gameWeight =
+                    Number(
+                        game.avgweight
+                    );
+
+
+                if (
+                    weightMin !== null
+                    &&
+                    (
+                        !Number.isFinite(
+                            gameWeight
+                        )
+                        ||
+                        gameWeight < weightMin
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+                if (
+                    weightMax !== null
+                    &&
+                    (
+                        !Number.isFinite(
+                            gameWeight
+                        )
+                        ||
+                        gameWeight > weightMax
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+                /*
+                * Filtro por cantidad
+                * de jugadores.
+                */
+
+                if (
+                    playerCount !== null
+                ) {
+
+                    const minPlayers =
+                        Number(
+                            game.minplayers
+                        );
+
+
+                    const maxPlayers =
+                        Number(
+                            game.maxplayers
+                        );
+
+
+                    if (
+                        !Number.isFinite(
+                            minPlayers
+                        )
+                        ||
+                        !Number.isFinite(
+                            maxPlayers
+                        )
+                        ||
+                        playerCount < minPlayers
+                        ||
+                        playerCount > maxPlayers
+                    ) {
+
+                        return false;
+
+                    }
 
                 }
 
