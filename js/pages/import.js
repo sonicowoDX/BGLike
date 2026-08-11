@@ -852,7 +852,7 @@ async function importarColeccion(
 
         /*
          * 6.
-         * Resultado.
+         * Resultado de actualización y/o creación.
          */
 
         if (created) {
