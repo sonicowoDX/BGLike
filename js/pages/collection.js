@@ -24,6 +24,8 @@ import {
     obtenerUsuariosColeccion
 } from "../services/users.service.js";
 
+let ultimoJuegoFeelingLuckyId =
+    null;
 
 let allGames = [];
 
@@ -51,6 +53,8 @@ let currentImageGame =
 
 let activeQuickFilter =
     null;
+
+let candidates;
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -458,7 +462,7 @@ function inicializarEventos(
         "click",
         function () {
 
-            iniciarFeelingLucky();
+            iniciarFeelingLucky(ultimoJuegoFeelingLuckyId);
 
         }
     );
@@ -2281,9 +2285,13 @@ function abrirFeelingLucky() {
 
     document.body.style.overflow =
         "hidden";
+    
+    ultimoJuegoFeelingLuckyId = null;
 
+    candidates =
+            obtenerCandidatosFeelingLucky();
 
-    iniciarFeelingLucky();
+    iniciarFeelingLucky(ultimoJuegoFeelingLuckyId);
 
 }
 
@@ -2452,7 +2460,7 @@ function elegirJuegoAleatorio(
 
 }
 
-async function iniciarFeelingLucky() {
+async function iniciarFeelingLucky(juegoExcluirId = null) {
 
     if (
         luckyRunning
@@ -2462,9 +2470,25 @@ async function iniciarFeelingLucky() {
 
     }
 
+    
+    
 
-    const candidates =
-        obtenerCandidatosFeelingLucky();
+    if (
+    juegoExcluirId !== null
+    ) {
+
+        candidates =
+            candidates.filter(
+                game =>
+                    Number(
+                        game.id
+                    ) !==
+                    Number(
+                        juegoExcluirId
+                    )
+            );
+
+    }
 
 
     if (
@@ -2523,6 +2547,8 @@ async function iniciarFeelingLucky() {
             candidates
         );
 
+    ultimoJuegoFeelingLuckyId =
+    winner.id;
 
     const animationGames =
         generarSecuenciaLucky(
