@@ -1263,6 +1263,28 @@
 
 }
 
+.lucky-time-count {
+
+    color:
+        var(--text-secondary);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+.lucky-player-count {
+
+    color:
+        var(--text-secondary);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
 
 .lucky-result-info {
 

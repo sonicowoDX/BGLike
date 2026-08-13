@@ -2681,6 +2681,16 @@ function mostrarJuegoLucky(
             "luckyImageContainer"
         );
 
+    const players =
+        document.getElementById(
+            "luckyPlayerCount"
+        );
+
+    const time2play =
+        document.getElementById(
+            "luckyTimeCount"
+        );
+
 
     name.textContent =
         winner
@@ -2711,6 +2721,13 @@ function mostrarJuegoLucky(
             game.score
         )}`;
 
+    time2play.textContent =
+        formatearPlayingTime(
+            game.playingtime
+        );
+    
+    players.textContent =
+        `👥 ${game.minplayers} – ${game.maxplayers}`;
 
     if (
         game.image_url
@@ -4186,5 +4203,60 @@ function inicializarDetalleReacciones(
         "mouseleave",
         ocultarDetalle
     );
+
+}
+
+function formatearPlayingTime(
+    playingtime
+) {
+
+    const minutes =
+        Number(
+            playingtime
+        );
+
+
+    if (
+        !Number.isFinite(
+            minutes
+        )
+        ||
+        minutes <= 0
+    ) {
+
+        return "⏱️ -";
+
+    }
+
+
+    if (
+        minutes < 60
+    ) {
+
+        return `⏱️ ${minutes} min`;
+
+    }
+
+
+    const hours =
+        Math.floor(
+            minutes / 60
+        );
+
+
+    const remainingMinutes =
+        minutes % 60;
+
+
+    if (
+        remainingMinutes === 0
+    ) {
+
+        return `⏱️ ${hours} h`;
+
+    }
+
+
+    return `⏱️ ${hours} h ${remainingMinutes} min`;
 
 }
