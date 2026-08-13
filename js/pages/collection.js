@@ -719,11 +719,6 @@ async function cargarJuegos(
         error
     ) {
 
-        console.error(
-            error
-        );
-
-
         mostrarError(
             error.message
         );
@@ -1284,26 +1279,6 @@ function ordenarJuegos(
                 }
             );
 
-
-            console.table(
-                result.slice(
-                    0,
-                    20
-                ).map(
-                    game => ({
-                        juego:
-                            game.objectname,
-
-                        score:
-                            game.score,
-
-                        peso:
-                            game.avgweight
-                    })
-                )
-            );
-
-
             break;
 
 
@@ -1580,12 +1555,6 @@ async function cambiarReaccion(
     catch (
         error
     ) {
-
-        console.error(
-            "Error actualizando reacción:",
-            error
-        );
-
 
         mostrarError(
             error.message
@@ -3098,11 +3067,6 @@ async function guardarImagenJuego() {
     catch (
         error
     ) {
-
-        console.error(
-            error
-        );
-
 
         errorElement.textContent =
             error.message;
