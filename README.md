@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🎲 BGLike
 
 **¿Qué jugamos hoy?**
