@@ -167,360 +167,6 @@
 
             </section>
 
-
-            <section class="collection-toolbar">
-
-                <div class="search-box">
-
-                    <span>
-                        🔎
-                    </span>
-
-                    <input
-                        type="search"
-                        id="gameSearch"
-                        placeholder="Buscar juego..."
-                        autocomplete="off">
-
-                </div>
-
-
-                <select
-                    id="gameSort"
-                    class="game-sort"
-                    title="Ordenar juegos">
-
-                    <option value="name">
-                        Nombre
-                    </option>
-
-                    <option value="rating-desc">
-                        Rating: mayor primero
-                    </option>
-
-                    <option value="rating-asc">
-                        Rating: menor primero
-                    </option>
-
-                    <option value="weight-desc">
-                        Peso: mayor primero
-                    </option>
-
-                    <option value="weight-asc">
-                        Peso: menor primero
-                    </option>
-
-                    <option value="score">
-                        Score: mayor primero
-                    </option>
-
-                </select>
-
-            </section>
-
-            <section class="quick-filters">
-
-                <span class="quick-filters-label">
-                    Filtros rápidos
-                </span>
-
-
-                <div class="quick-filter-list">
-
-                    <button
-                        type="button"
-                        class="quick-filter-chip"
-                        data-quick-filter="top">
-
-                        🔥 Mejor puntuados
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="quick-filter-chip"
-                        data-quick-filter="favorites">
-
-                        ⭐ Favoritos
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="quick-filter-chip"
-                        data-quick-filter="unplayed">
-
-                        ❔ Sin jugar
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="quick-filter-chip"
-                        data-quick-filter="everyone">
-
-                        👥 Para todos
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="quick-filter-chip"
-                        data-quick-filter="controversial">
-
-                        ⚡ Polémicos
-
-                    </button>
-
-                </div>
-
-            </section>
-
-            <section class="collection-filters">
-
-                <div class="filter-group">
-
-    <div class="filter-heading">
-
-        <div>
-            <span class="filter-label">
-                Peso
-            </span>
-
-            <small>
-                Filtra por complejidad del juego.
-            </small>
-        </div>
-
-    </div>
-
-
-    <div class="weight-filter">
-
-        <div class="filter-input-field">
-
-            <label for="weightMin">
-                Mínimo
-            </label>
-
-            <input
-                type="number"
-                id="weightMin"
-                min="0.0"
-                max="5.0"
-                step="0.1"
-                placeholder="1.0">
-
-        </div>
-
-
-        <span class="filter-range-separator">
-            –
-        </span>
-
-
-        <div class="filter-input-field">
-
-            <label for="weightMax">
-                Máximo
-            </label>
-
-            <input
-                type="number"
-                id="weightMax"
-                min="0.0"
-                max="5.0"
-                step="0.1"
-                placeholder="5.0">
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<div class="filter-group">
-
-    <div class="filter-heading">
-
-        <div>
-            <span class="filter-label">
-                Cantidad de jugadores
-            </span>
-
-            <small>
-                Independiente de los jugadores presentes.
-            </small>
-        </div>
-
-    </div>
-
-
-    <select
-        id="playerCountFilter"
-        class="player-count-filter"
-        title="Cantidad de jugadores">
-
-            <option value="">
-                Cualquier cantidad
-            </option>
-
-            <option value="1">
-                1 jugador
-            </option>
-
-            <option value="2">
-                2 jugadores
-            </option>
-
-            <option value="3">
-                3 jugadores
-            </option>
-
-            <option value="4">
-                4 jugadores
-            </option>
-
-            <option value="5">
-                5 jugadores
-            </option>
-
-            <option value="6">
-                6 jugadores
-            </option>
-
-            <option value="7">
-                7 jugadores
-            </option>
-
-            <option value="8">
-                8 jugadores
-            </option>
-
-            <option value="9">
-                9 jugadores
-            </option>
-
-            <option value="10">
-                10 jugadores
-            </option>
-
-            <option value="11">
-                11 jugadores
-            </option>
-
-            <option value="12">
-                12 jugadores
-            </option>
-
-        </select>
-
-    </div>
-
-    <div class="filter-group">
-
-        <div class="filter-heading">
-
-            <div>
-                <span class="filter-label">
-                    Tiempo de juego
-                </span>
-
-                <small>
-                    Duración aproximada en minutos.
-                </small>
-            </div>
-
-        </div>
-
-        <div class="weight-filter">
-
-
-            <div class="filter-input-field">
-
-
-                <label for="playingTimeMin">
-                    Mínimo
-                </label>
-
-
-                <input
-                    type="number"
-                    id="playingTimeMin"
-                    min="0"
-                    step="5"
-                    placeholder="0">
-
-
-            </div>
-
-
-
-            <span class="filter-range-separator">
-                –
-            </span>
-
-
-
-            <div class="filter-input-field">
-
-
-                <label for="playingTimeMax">
-                    Máximo
-                </label>
-
-
-                <input
-                    type="number"
-                    id="playingTimeMax"
-                    min="0"
-                    step="5"
-                    placeholder="Sin límite">
-
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <div class="filter-group">
-
-        <div class="filter-heading">
-
-            <div>
-                <span class="filter-label">
-                    Score mínimo
-                </span>
-
-                <small>
-                    Puntuación mínima del grupo.
-                </small>
-            </div>
-
-        </div>
-
-
-        <div class="filter-input-field">
-
-            <input
-                type="number"
-                id="minimumScore"
-                step="1"
-                placeholder="Sin mínimo">
-
-        </div>
-
-    </div>
-            </section>
-
             <section class="collection-filters">
 
                 <div class="filter-group">
@@ -633,6 +279,362 @@
 
                 </div>
 
+            </section>
+
+            <section class="quick-filters">
+
+                <span class="quick-filters-label">
+                    Filtros rápidos
+                </span>
+
+
+                <div class="quick-filter-list">
+
+                    <button
+                        type="button"
+                        class="quick-filter-chip"
+                        data-quick-filter="top">
+
+                        🔥 Mejor puntuados
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-filter-chip"
+                        data-quick-filter="favorites">
+
+                        ⭐ Favoritos
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-filter-chip"
+                        data-quick-filter="unplayed">
+
+                        ❔ Sin jugar
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-filter-chip"
+                        data-quick-filter="everyone">
+
+                        👥 Para todos
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-filter-chip"
+                        data-quick-filter="controversial">
+
+                        ⚡ Polémicos
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <section class="collection-toolbar">
+
+                <div class="search-box">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="search"
+                        id="gameSearch"
+                        placeholder="Buscar juego..."
+                        autocomplete="off">
+
+                </div>
+
+
+                <select
+                    id="gameSort"
+                    class="game-sort"
+                    title="Ordenar juegos">
+
+                    <option value="name">
+                        Nombre
+                    </option>
+
+                    <option value="rating-desc">
+                        Rating: mayor primero
+                    </option>
+
+                    <option value="rating-asc">
+                        Rating: menor primero
+                    </option>
+
+                    <option value="weight-desc">
+                        Peso: mayor primero
+                    </option>
+
+                    <option value="weight-asc">
+                        Peso: menor primero
+                    </option>
+
+                    <option value="score">
+                        Score: mayor primero
+                    </option>
+
+                </select>
+
+            </section>
+
+            
+
+            <section class="collection-filters">
+
+                <div class="filter-group">
+
+                    <div class="filter-heading">
+
+                        <div>
+                            <span class="filter-label">
+                                Peso
+                            </span>
+
+                            <small>
+                                Filtra por complejidad del juego.
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="weight-filter">
+
+                        <div class="filter-input-field">
+
+                            <label for="weightMin">
+                                Mínimo
+                            </label>
+
+                            <input
+                                type="number"
+                                id="weightMin"
+                                min="0.0"
+                                max="5.0"
+                                step="0.1"
+                                placeholder="1.0">
+
+                        </div>
+
+
+                        <span class="filter-range-separator">
+                            –
+                        </span>
+
+
+                        <div class="filter-input-field">
+
+                            <label for="weightMax">
+                                Máximo
+                            </label>
+
+                            <input
+                                type="number"
+                                id="weightMax"
+                                min="0.0"
+                                max="5.0"
+                                step="0.1"
+                                placeholder="5.0">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <div class="filter-heading">
+
+                        <div>
+                            <span class="filter-label">
+                                Cantidad de jugadores
+                            </span>
+
+                            <small>
+                                Independiente de los jugadores presentes.
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <select
+                        id="playerCountFilter"
+                        class="player-count-filter"
+                        title="Cantidad de jugadores">
+
+                            <option value="">
+                                Cualquier cantidad
+                            </option>
+
+                            <option value="1">
+                                1 jugador
+                            </option>
+
+                            <option value="2">
+                                2 jugadores
+                            </option>
+
+                            <option value="3">
+                                3 jugadores
+                            </option>
+
+                            <option value="4">
+                                4 jugadores
+                            </option>
+
+                            <option value="5">
+                                5 jugadores
+                            </option>
+
+                            <option value="6">
+                                6 jugadores
+                            </option>
+
+                            <option value="7">
+                                7 jugadores
+                            </option>
+
+                            <option value="8">
+                                8 jugadores
+                            </option>
+
+                            <option value="9">
+                                9 jugadores
+                            </option>
+
+                            <option value="10">
+                                10 jugadores
+                            </option>
+
+                            <option value="11">
+                                11 jugadores
+                            </option>
+
+                            <option value="12">
+                                12 jugadores
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="filter-group">
+
+                        <div class="filter-heading">
+
+                            <div>
+                                <span class="filter-label">
+                                    Tiempo de juego
+                                </span>
+
+                                <small>
+                                    Duración aproximada en minutos.
+                                </small>
+                            </div>
+
+                        </div>
+
+                        <div class="weight-filter">
+
+
+                            <div class="filter-input-field">
+
+
+                                <label for="playingTimeMin">
+                                    Mínimo
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="playingTimeMin"
+                                    min="0"
+                                    step="5"
+                                    placeholder="0">
+
+
+                            </div>
+
+
+
+                            <span class="filter-range-separator">
+                                –
+                            </span>
+
+
+
+                            <div class="filter-input-field">
+
+
+                                <label for="playingTimeMax">
+                                    Máximo
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="playingTimeMax"
+                                    min="0"
+                                    step="5"
+                                    placeholder="Sin límite">
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="filter-group">
+
+                        <div class="filter-heading">
+
+                            <div>
+                                <span class="filter-label">
+                                    Score mínimo
+                                </span>
+
+                                <small>
+                                    Puntuación mínima del grupo.
+                                </small>
+                            </div>
+
+                        </div>
+
+
+                        <div class="filter-input-field">
+
+                            <input
+                                type="number"
+                                id="minimumScore"
+                                step="1"
+                                placeholder="Sin mínimo">
+
+                        </div>
+
+                    </div>
             </section>
 
 
