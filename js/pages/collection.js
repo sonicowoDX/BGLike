@@ -228,6 +228,22 @@ function inicializarEventos(
             agregarFilaScore
         );
 
+    document.getElementById(
+        "btnDeleteScoreRow"
+    )
+        .addEventListener(
+            "click",
+            EliminarFilaScore
+        );
+
+    document.getElementById(
+        "btnDeleteScoreColumn"
+    )
+        .addEventListener(
+            "click",
+            eliminarColumnaScore
+        );
+
 
     document.getElementById(
         "btnAddScoreColumn"
@@ -5113,6 +5129,51 @@ function agregarFilaScore() {
 
     scoreMatrix.push(
         newRow
+    );
+
+
+    renderScoreMatrix();
+
+}
+
+function EliminarFilaScore() {
+
+    if (    
+        scoreMatrix.length <= 1
+    ) {
+
+        return;
+
+    }
+
+
+    scoreMatrix.pop();
+
+
+    renderScoreMatrix();
+
+}
+
+function eliminarColumnaScore() {
+
+    if (
+        scoreMatrix[0].length <= 2
+    ) {
+
+        return;
+
+    }
+
+
+    scoreMatrix.forEach(
+        (
+            row,
+            rowIndex
+        ) => {
+
+            row.pop();
+
+        }
     );
 
 
