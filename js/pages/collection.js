@@ -5161,10 +5161,12 @@ function limpiarScoreMatrix() {
     scoreMatrix = [
         [
             "Nombre Jugador",
-            "Rubro 1"
+            "Rubro 1",
+            "SUMA FINAL"
         ],
         [
             "Jugador 1",
+            "",
             ""
         ]
     ];
