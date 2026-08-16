@@ -134,6 +134,24 @@
 
                 </button>
 
+                <button
+                    type="button"
+                    id="btnStartingPlayer"
+                    class="starting-player-button">
+
+                    👤 Elegir jugador inicial
+
+                </button>
+
+                <button
+                    type="button"
+                    id="btnScoreMatrix"
+                    class="starting-player-button">
+
+                    📊 Puntuación
+
+                </button>
+
                 <a
                     href="https://paypal.me/davidolivettopalomin"
                     target="_blank"
@@ -896,6 +914,229 @@
                 🎲 Elegir otra vez.
 
             </button>
+
+        </section>
+
+    </div>
+
+    <div
+        id="startingPlayerModal"
+        class="starting-player-modal"
+        hidden>
+
+        <div
+            id="startingPlayerBackdrop"
+            class="starting-player-backdrop">
+        </div>
+
+
+        <section
+            class="starting-player-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="startingPlayerTitle">
+
+
+            <button
+                type="button"
+                id="btnCloseStartingPlayer"
+                class="starting-player-close"
+                aria-label="Cerrar">
+
+                ✕
+
+            </button>
+
+
+            <header class="starting-player-header">
+
+                <span class="starting-player-icon">
+                    👤
+                </span>
+
+
+                <h2 id="startingPlayerTitle">
+                    Elegir jugador inicial
+                </h2>
+
+
+                <p>
+                    Se elegirá aleatoriamente entre los
+                    jugadores presentes y los invitados
+                    que agregues aquí.
+                </p>
+
+            </header>
+
+
+            <div class="starting-player-section">
+
+                <span class="starting-player-label">
+                    Participantes
+                </span>
+
+
+                <div
+                    id="startingPlayerParticipants"
+                    class="starting-player-participants">
+                </div>
+
+            </div>
+
+
+            <div class="starting-player-guest-form">
+
+                <label for="startingPlayerGuestName">
+                    Agregar invitado temporal
+                </label>
+
+
+                <div class="starting-player-guest-row">
+
+                    <input
+                        type="text"
+                        id="startingPlayerGuestName"
+                        maxlength="30"
+                        placeholder="Apodo">
+
+
+                    <button
+                        type="button"
+                        id="btnAddStartingPlayerGuest">
+
+                        + Agregar
+
+                    </button>
+
+                </div>
+
+
+                <small>
+                    Este jugador no se guardará en la colección.
+                </small>
+
+            </div>
+
+
+            <div
+                id="startingPlayerResult"
+                class="starting-player-result"
+                hidden>
+
+                <span>
+                    Jugador inicial
+                </span>
+
+                <strong id="startingPlayerWinner">
+                    -
+                </strong>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="btnSpinStartingPlayer"
+                class="starting-player-spin">
+
+                🎲 Elegir jugador inicial
+
+            </button>
+
+        </section>
+
+    </div>
+
+    <div
+        id="scoreMatrixModal"
+        class="score-matrix-modal"
+        hidden>
+
+        <div
+            id="scoreMatrixBackdrop"
+            class="score-matrix-backdrop">
+        </div>
+
+
+        <section
+            class="score-matrix-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="scoreMatrixTitle">
+
+
+            <button
+                type="button"
+                id="btnCloseScoreMatrix"
+                class="score-matrix-close">
+
+                ✕
+
+            </button>
+
+
+            <header class="score-matrix-header">
+
+                <span class="score-matrix-icon">
+                    📊
+                </span>
+
+                <h2 id="scoreMatrixTitle">
+                    Puntuación
+                </h2>
+
+                <p>
+                    Crea una tabla personalizada para llevar
+                    la puntuación de la partida.
+                </p>
+
+            </header>
+
+
+            <div class="score-matrix-actions">
+
+                <button
+                    type="button"
+                    id="btnAddScoreRow">
+
+                    + Fila
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnAddScoreColumn">
+
+                    + Columna
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnClearScoreMatrix"
+                    class="score-matrix-clear">
+
+                    Limpiar
+
+                </button>
+
+            </div>
+
+
+            <div class="score-matrix-wrapper">
+
+                <table
+                    id="scoreMatrixTable"
+                    class="score-matrix-table">
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </section>
 

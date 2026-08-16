@@ -27,6 +27,19 @@ import {
 let ultimoJuegoFeelingLuckyId =
     null;
 
+let scoreMatrix = [
+    [
+        "Nombre Jugador",
+        "Rubro 1",
+        "SUMA FINAL"
+    ],
+    [
+        "Jugador 1",
+        "",
+        "0"
+    ]
+];
+
 let allGames = [];
 
 let currentSession = null;
@@ -43,6 +56,13 @@ let selectedGameTypes =
         "standalone",
         "expansion"
     ]);
+
+let startingPlayerGuests =
+    [];
+
+
+let startingPlayerRunning =
+    false;
 
 let visibleGames = [];
 
@@ -172,6 +192,106 @@ function cargarEncabezado(
 function inicializarEventos(
     session
 ) {
+
+    document.getElementById(
+        "btnScoreMatrix"
+    )
+        .addEventListener(
+            "click",
+            abrirScoreMatrix
+        );
+
+
+    document.getElementById(
+        "btnCloseScoreMatrix"
+    )
+        .addEventListener(
+            "click",
+            cerrarScoreMatrix
+        );
+
+
+    document.getElementById(
+        "scoreMatrixBackdrop"
+    )
+        .addEventListener(
+            "click",
+            cerrarScoreMatrix
+        );
+
+
+    document.getElementById(
+        "btnAddScoreRow"
+    )
+        .addEventListener(
+            "click",
+            agregarFilaScore
+        );
+
+
+    document.getElementById(
+        "btnAddScoreColumn"
+    )
+        .addEventListener(
+            "click",
+            agregarColumnaScore
+        );
+
+
+    document.getElementById(
+        "btnClearScoreMatrix"
+    )
+        .addEventListener(
+            "click",
+            limpiarScoreMatrix
+        );  
+
+    document.getElementById(
+        "btnCloseStartingPlayer"
+    )
+        .addEventListener(
+            "click",
+            cerrarStartingPlayer
+        );
+
+
+    document.getElementById(
+        "startingPlayerBackdrop"
+    )
+        .addEventListener(
+            "click",
+            cerrarStartingPlayer
+        );
+
+    document.getElementById(
+    "btnSpinStartingPlayer"
+    )
+        .addEventListener(
+            "click",
+            elegirStartingPlayer
+        );
+
+    const btnAddGuest =
+    document.getElementById(
+        "btnAddStartingPlayerGuest"
+    );
+
+
+    btnAddGuest.addEventListener(
+        "click",
+        agregarStartingPlayerGuest
+    );
+
+    const btnStartingPlayer =
+    document.getElementById(
+        "btnStartingPlayer"
+    );
+
+
+    btnStartingPlayer.addEventListener(
+        "click",
+        abrirStartingPlayer
+    );
 
     const playingTimeMin =
     document.getElementById(
@@ -391,6 +511,26 @@ function inicializarEventos(
 
 
                 await guardarImagenJuego();
+
+            }
+        );
+
+    document.getElementById(
+        "startingPlayerGuestName"
+    )
+        .addEventListener(
+            "keydown",
+            function (
+                event
+            ) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    agregarStartingPlayerGuest();
+
+                }
 
             }
         );
@@ -4222,5 +4362,1039 @@ function formatearPlayingTime(
 
 
     return `⏱️ ${hours} h ${remainingMinutes} min`;
+
+}
+
+function abrirStartingPlayer() {
+
+    const modal =
+        document.getElementById(
+            "startingPlayerModal"
+        );
+
+
+    /*
+     * Los invitados temporales
+     * empiezan vacíos cada vez
+     * que abrimos el modal.
+     */
+
+    startingPlayerGuests =
+        [];
+
+
+    document.getElementById(
+        "startingPlayerResult"
+    ).hidden =
+        true;
+
+
+    renderStartingPlayerParticipants();
+
+
+    modal.hidden =
+        false;
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+function obtenerJugadoresStartingPlayer() {
+
+    const selectedUsers =
+        allUsers
+            .filter(
+                user =>
+                    selectedPlayerIds.has(
+                        Number(
+                            user.id
+                        )
+                    )
+            )
+            .map(
+                user => ({
+                    id:
+                        `user-${user.id}`,
+
+                    name:
+                        user.apodo,
+
+                    temporary:
+                        false
+                })
+            );
+
+
+    return [
+        ...selectedUsers,
+        ...startingPlayerGuests
+    ];
+
+}
+
+function renderStartingPlayerParticipants() {
+
+    const container =
+        document.getElementById(
+            "startingPlayerParticipants"
+        );
+
+
+    const players =
+        obtenerJugadoresStartingPlayer();
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        players.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <span class="starting-player-empty">
+                No hay jugadores seleccionados.
+            </span>
+
+        `;
+
+
+        actualizarEstadoStartingPlayer();
+
+        return;
+
+    }
+
+
+    for (
+        const player of players
+    ) {
+
+        const chip =
+            document.createElement(
+                "div"
+            );
+
+
+        chip.className =
+            "starting-player-chip";
+
+
+        const name =
+            document.createElement(
+                "span"
+            );
+
+
+        name.textContent =
+            player.name;
+
+
+        chip.appendChild(
+            name
+        );
+
+
+        /*
+         * Sólo los invitados
+         * temporales pueden
+         * eliminarse desde aquí.
+         */
+
+        if (
+            player.temporary
+        ) {
+
+            const remove =
+                document.createElement(
+                    "button"
+                );
+
+
+            remove.type =
+                "button";
+
+
+            remove.textContent =
+                "✕";
+
+
+            remove.title =
+                "Quitar invitado";
+
+
+            remove.addEventListener(
+                "click",
+                function () {
+
+                    eliminarStartingPlayerGuest(
+                        player.id
+                    );
+
+                }
+            );
+
+
+            chip.appendChild(
+                remove
+            );
+
+        }
+
+
+        container.appendChild(
+            chip
+        );
+
+    }
+
+
+    actualizarEstadoStartingPlayer();
+
+}
+
+
+
+function agregarStartingPlayerGuest() {
+
+    const input =
+        document.getElementById(
+            "startingPlayerGuestName"
+        );
+
+
+    const name =
+        input.value
+            .trim();
+
+
+    if (!name) {
+
+        return;
+
+    }
+
+
+    const allPlayers =
+        obtenerJugadoresStartingPlayer();
+
+
+    /*
+     * Evitar nombres duplicados
+     * dentro de este modal.
+     */
+
+    const duplicate =
+        allPlayers.some(
+            player =>
+                player.name
+                    .toLowerCase() ===
+                name.toLowerCase()
+        );
+
+
+    if (
+        duplicate
+    ) {
+
+        input.select();
+
+        return;
+
+    }
+
+
+    startingPlayerGuests.push({
+
+        id:
+            `guest-${crypto.randomUUID()}`,
+
+        name,
+
+        temporary:
+            true
+
+    });
+
+
+    input.value =
+        "";
+
+
+    renderStartingPlayerParticipants();
+
+
+    input.focus();
+
+}
+
+function eliminarStartingPlayerGuest(
+    id
+) {
+
+    startingPlayerGuests =
+        startingPlayerGuests.filter(
+            player =>
+                player.id !== id
+        );
+
+
+    renderStartingPlayerParticipants();
+
+}
+
+async function elegirStartingPlayer() {
+
+    if (
+        startingPlayerRunning
+    ) {
+
+        return;
+
+    }
+
+
+    const players =
+        obtenerJugadoresStartingPlayer();
+
+
+    if (
+        players.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "btnSpinStartingPlayer"
+        );
+
+
+    const result =
+        document.getElementById(
+            "startingPlayerResult"
+        );
+
+
+    const winner =
+        document.getElementById(
+            "startingPlayerWinner"
+        );
+
+
+    startingPlayerRunning =
+        true;
+
+
+    button.disabled =
+        true;
+
+
+    result.hidden =
+        false;
+
+
+    /*
+     * Pequeña animación tipo ruleta.
+     */
+
+    const duration =
+        1800;
+
+
+    const interval =
+        90;
+
+
+    const start =
+        performance.now();
+
+
+    await new Promise(
+        resolve => {
+
+            const timer =
+                setInterval(
+                    function () {
+
+                        const randomPlayer =
+                            players[
+                                Math.floor(
+                                    Math.random() *
+                                    players.length
+                                )
+                            ];
+
+
+                        winner.textContent =
+                            randomPlayer.name;
+
+
+                        if (
+                            performance.now() -
+                            start >=
+                            duration
+                        ) {
+
+                            clearInterval(
+                                timer
+                            );
+
+
+                            resolve();
+
+                        }
+
+                    },
+                    interval
+                );
+
+        }
+    );
+
+
+    /*
+     * Ganador definitivo.
+     */
+
+    const selected =
+        players[
+            Math.floor(
+                Math.random() *
+                players.length
+            )
+        ];
+
+
+    winner.textContent =
+        selected.name;
+
+    /*
+    * Celebrar al jugador inicial.
+    */
+
+    lanzarConfeti();
+
+
+    button.textContent =
+        "🎲 Elegir de nuevo";
+
+
+    button.disabled =
+        false;
+
+
+    startingPlayerRunning =
+        false;
+
+}
+
+function cerrarStartingPlayer() {
+
+    if (
+        startingPlayerRunning
+    ) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "startingPlayerModal"
+    ).hidden =
+        true;
+
+
+    document.body.style.overflow =
+        "";
+
+
+    startingPlayerGuests =
+        [];
+
+}
+
+function actualizarEstadoStartingPlayer() {
+
+    const button =
+        document.getElementById(
+            "btnSpinStartingPlayer"
+        );
+
+
+    const players =
+        obtenerJugadoresStartingPlayer();
+
+
+    button.disabled =
+        players.length === 0;
+
+}
+
+function renderScoreMatrix() {
+
+    const tbody =
+        document.querySelector(
+            "#scoreMatrixTable tbody"
+        );
+
+
+    tbody.innerHTML =
+        "";
+
+
+    scoreMatrix.forEach(
+        (
+            row,
+            rowIndex
+        ) => {
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.forEach(
+                (
+                    value,
+                    columnIndex
+                ) => {
+
+                    const td =
+                        document.createElement(
+                            "td"
+                        );
+
+
+                    const isHeader =
+                        rowIndex === 0;
+
+
+                    const isPlayerColumn =
+                        columnIndex === 0;
+
+
+                    const isTotalColumn =
+                        columnIndex ===
+                        row.length - 1;
+
+
+                    /*
+                     * SUMA FINAL
+                     */
+
+                    if (
+                        isTotalColumn
+                    ) {
+
+                        if (
+                            isHeader
+                        ) {
+
+                            const header =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            header.className =
+                                "score-matrix-total-header";
+
+
+                            header.textContent =
+                                "SUMA FINAL";
+
+
+                            td.appendChild(
+                                header
+                            );
+
+                        }
+                        else {
+
+                            const total =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                total.className =
+                    "score-matrix-total";
+
+
+                const suma =
+                    calcularSumaFila(
+                        row
+                    );
+
+
+                const sumaGanadora =
+                    obtenerSumaGanadora();
+
+
+                total.textContent =
+                    suma;
+
+
+                if (
+                    sumaGanadora !== null
+                    &&
+                    sumaGanadora !== 0
+                    &&
+                    suma === sumaGanadora
+                ) {
+
+                    const crown =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    crown.className =
+                        "score-matrix-crown";
+
+
+                    crown.textContent =
+                        "👑";
+
+
+                    crown.title =
+                        "Puntuación más alta";
+
+
+                    total.appendChild(
+                        crown
+                    );
+
+                }
+
+
+                            td.appendChild(
+                                total
+                            );
+
+                        }
+
+
+                        tr.appendChild(
+                            td
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Celdas editables.
+                     */
+
+                    const input =
+                        document.createElement(
+                            "input"
+                        );
+
+
+                    input.type =
+                        isPlayerColumn
+                        ||
+                        isHeader
+                            ? "text"
+                            : "number";
+
+
+                    input.value =
+                        value;
+
+
+                    if (
+                        isHeader
+                    ) {
+
+                        input.classList.add(
+                            "score-matrix-header-input"
+                        );
+
+                    }
+
+
+                    if (
+                        isPlayerColumn
+                    ) {
+
+                        input.classList.add(
+                            "score-matrix-player-input"
+                        );
+
+                    }
+
+
+                    input.addEventListener(
+                        "input",
+                        function () {
+
+                            scoreMatrix[
+                                rowIndex
+                            ][
+                                columnIndex
+                            ] =
+                                input.value;
+
+
+                            if (
+                                !isHeader
+                                &&
+                                !isPlayerColumn
+                            ) {
+
+                                actualizarSumasScore();
+
+                            }
+
+                        }
+                    );
+
+
+                    td.appendChild(
+                        input
+                    );
+
+
+                    tr.appendChild(
+                        td
+                    );
+
+                }
+            );
+
+
+            tbody.appendChild(
+                tr
+            );
+
+        }
+    );
+
+}
+
+function agregarFilaScore() {
+
+    const columns =
+        scoreMatrix[0].length;
+
+
+    const newRow =
+        new Array(
+            columns
+        ).fill(
+            ""
+        );
+
+
+    newRow[0] =
+        `Jugador ${scoreMatrix.length}`;
+
+
+    scoreMatrix.push(
+        newRow
+    );
+
+
+    renderScoreMatrix();
+
+}
+
+function agregarColumnaScore() {
+
+    const totalColumnIndex =
+        scoreMatrix[0].length - 1;
+
+
+    const newColumnNumber =
+        totalColumnIndex;
+
+
+    scoreMatrix.forEach(
+        (
+            row,
+            rowIndex
+        ) => {
+
+            const value =
+                rowIndex === 0
+                    ? `Rubro ${newColumnNumber}`
+                    : "";
+
+
+            row.splice(
+                totalColumnIndex,
+                0,
+                value
+            );
+
+        }
+    );
+
+
+    renderScoreMatrix();
+
+}
+
+function limpiarScoreMatrix() {
+
+    scoreMatrix = [
+        [
+            "Nombre Jugador",
+            "Rubro 1"
+        ],
+        [
+            "Jugador 1",
+            ""
+        ]
+    ];
+
+
+    renderScoreMatrix();
+
+}
+
+function abrirScoreMatrix() {
+
+    const modal =
+        document.getElementById(
+            "scoreMatrixModal"
+        );
+
+
+    renderScoreMatrix();
+
+
+    modal.hidden =
+        false;
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+function cerrarScoreMatrix() {
+
+    document.getElementById(
+        "scoreMatrixModal"
+    ).hidden =
+        true;
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+function calcularSumaFila(
+    row
+) {
+
+    let total =
+        0;
+
+
+    /*
+     * Empezamos en 1 porque
+     * la primera columna es
+     * el nombre del jugador.
+     *
+     * Terminamos antes de la última,
+     * porque esa es SUMA FINAL.
+     */
+
+    for (
+        let columnIndex = 1;
+        columnIndex < row.length - 1;
+        columnIndex++
+    ) {
+
+        const value =
+            Number(
+                row[
+                    columnIndex
+                ]
+            );
+
+
+        if (
+            Number.isFinite(
+                value
+            )
+        ) {
+
+            total +=
+                value;
+
+        }
+
+    }
+
+
+    return total;
+
+}
+
+function actualizarSumasScore() {
+
+    const table =
+        document.getElementById(
+            "scoreMatrixTable"
+        );
+
+
+    const sumaGanadora =
+        obtenerSumaGanadora();
+
+
+    for (
+        let rowIndex = 1;
+        rowIndex < scoreMatrix.length;
+        rowIndex++
+    ) {
+
+        const tableRow =
+            table.rows[
+                rowIndex
+            ];
+
+
+        if (!tableRow) {
+
+            continue;
+
+        }
+
+
+        const totalCell =
+            tableRow.cells[
+                tableRow.cells.length - 1
+            ];
+
+
+        const totalElement =
+            totalCell.querySelector(
+                ".score-matrix-total"
+            );
+
+
+        if (!totalElement) {
+
+            continue;
+
+        }
+
+
+        const suma =
+            calcularSumaFila(
+                scoreMatrix[
+                    rowIndex
+                ]
+            );
+
+
+        totalElement.innerHTML =
+            "";
+
+
+        const number =
+            document.createElement(
+                "span"
+            );
+
+
+        number.textContent =
+            suma;
+
+
+        totalElement.appendChild(
+            number
+        );
+
+
+        if (
+            sumaGanadora !== null
+            &&
+            suma === sumaGanadora
+        ) {
+
+            const crown =
+                document.createElement(
+                    "span"
+                );
+
+
+            crown.className =
+                "score-matrix-crown";
+
+
+            crown.textContent =
+                "👑";
+
+
+            crown.title =
+                "Puntuación más alta";
+
+
+            totalElement.appendChild(
+                crown
+            );
+
+        }
+
+    }
+
+}
+
+function obtenerSumaGanadora() {
+
+    if (
+        scoreMatrix.length <= 1
+    ) {
+
+        return null;
+
+    }
+
+
+    const totales =
+        scoreMatrix
+            .slice(1)
+            .map(
+                row =>
+                    calcularSumaFila(
+                        row
+                    )
+            );
+
+
+    if (
+        totales.length === 0
+    ) {
+
+        return null;
+
+    }
+
+
+    return Math.max(
+        ...totales
+    );
 
 }
