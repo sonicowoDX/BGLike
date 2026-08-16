@@ -4812,10 +4812,16 @@ function cerrarStartingPlayer() {
     ).hidden =
         true;
 
+    const button =
+        document.getElementById(
+            "btnSpinStartingPlayer"
+        );
+
+    button.textContent =
+        "🎲 Elegir jugador inicial";
 
     document.body.style.overflow =
         "";
-
 
     startingPlayerGuests =
         [];
