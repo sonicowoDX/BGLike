@@ -2124,7 +2124,8 @@
 }
 
 
-.quick-filter-chip.active {
+.quick-filter-chip.active,
+.quick-filter-chip[aria-expanded="true"] {
 
     color:
         #ffffff;

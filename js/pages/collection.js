@@ -344,9 +344,18 @@ function inicializarEventos(
         aplicarFiltros
     );
 
+    const advancedFiltersToggle = document.getElementById("advancedFiltersToggle");
+    const advancedFilters = document.getElementById("advancedFilters");
+
+    advancedFiltersToggle.addEventListener("click", () => {
+        const expanded = advancedFilters.hidden;
+        advancedFilters.hidden = !expanded;
+        advancedFiltersToggle.setAttribute("aria-expanded", String(expanded));
+    });
+
     const quickFilterButtons =
     document.querySelectorAll(
-        ".quick-filter-chip"
+        "[data-quick-filter]"
     );
 
 
@@ -3473,7 +3482,7 @@ function actualizarChipsRapidos() {
 
     const buttons =
         document.querySelectorAll(
-            ".quick-filter-chip"
+            "[data-quick-filter]"
         );
 
 
