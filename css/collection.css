@@ -2075,7 +2075,8 @@
 }
 
 
-.quick-filter-chip {
+.quick-filter-chip,
+.advanced-filters-toggle {
 
     min-height: 36px;
 
@@ -2110,7 +2111,8 @@
 }
 
 
-.quick-filter-chip:hover {
+.quick-filter-chip:hover,
+.advanced-filters-toggle:hover {
 
     transform:
         translateY(-1px);
@@ -2124,8 +2126,15 @@
 }
 
 
-.quick-filter-chip.active,
-.quick-filter-chip[aria-expanded="true"] {
+.advanced-filters-toggle span {
+    display: inline-block;
+}
+
+.advanced-filters-toggle[aria-expanded="true"] span {
+    transform: rotate(180deg);
+}
+
+.quick-filter-chip.active {
 
     color:
         #ffffff;
